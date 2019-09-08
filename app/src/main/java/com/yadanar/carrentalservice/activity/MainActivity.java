@@ -1,10 +1,12 @@
-package com.yadanar.carrentalservice;
+package com.yadanar.carrentalservice.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.yadanar.carrentalservice.R;
 
 public class MainActivity extends AppCompatActivity {
 
