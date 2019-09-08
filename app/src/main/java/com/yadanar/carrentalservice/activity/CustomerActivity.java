@@ -1,5 +1,6 @@
 package com.yadanar.carrentalservice.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,16 +52,22 @@ public class CustomerActivity extends AppCompatActivity {
         rvCarList.setHasFixedSize(true);
 
         List<CarModel> carList = new ArrayList<>();
-        for (int i = 0; i < 26; i++) {
+        for (int i = 1; i <= 100; i++) {
             CarModel car = new CarModel();
             car.setType("Car " + i);
+            car.setPrice(1000 * i);
+            car.setYear(1000 * i);
+            car.setSeats(i);
+            car.setColor("Color " + i);
             carList.add(car);
         }
         CarListRvAdapter carListRvAdapter = new CarListRvAdapter(carList,
                 new CarListRvAdapter.CarListItemOnClickListener() {
                     @Override
                     public void onClick(CarModel car, int position) {
-                        Toast.makeText(CustomerActivity.this, car.getType(), Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(CustomerActivity.this, CarDetailActivity.class);
+                        i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
+                        startActivity(i);
                     }
                 });
         rvCarList.setAdapter(carListRvAdapter);

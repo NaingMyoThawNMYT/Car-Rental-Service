@@ -1,6 +1,8 @@
 package com.yadanar.carrentalservice.model;
 
-public class CarModel {
+import java.io.Serializable;
+
+public class CarModel implements Serializable {
     private String id,
             photoUrl,
             type,
