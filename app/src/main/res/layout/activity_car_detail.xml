@@ -159,6 +159,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="16dp"
         android:background="@drawable/bg_rounded"
+        android:onClick="bookNow"
         android:text="@string/book_now"
         android:textAllCaps="false"
         android:textColor="@android:color/white" />

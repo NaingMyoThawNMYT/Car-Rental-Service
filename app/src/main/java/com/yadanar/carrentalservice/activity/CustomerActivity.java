@@ -59,6 +59,7 @@ public class CustomerActivity extends AppCompatActivity {
             car.setYear(1000 * i);
             car.setSeats(i);
             car.setColor("Color " + i);
+            car.setAvailable(i % 2 == 0);
             carList.add(car);
         }
         CarListRvAdapter carListRvAdapter = new CarListRvAdapter(carList,

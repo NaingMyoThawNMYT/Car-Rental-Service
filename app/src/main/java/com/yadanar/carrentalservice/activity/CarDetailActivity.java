@@ -1,6 +1,8 @@
 package com.yadanar.carrentalservice.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +12,8 @@ import com.yadanar.carrentalservice.model.CarModel;
 
 public class CarDetailActivity extends AppCompatActivity {
     public static final String KEY_CAR_PARAM = "key_car_param";
+
+    private CarModel car = null;
 
     private TextView tvType,
             tvPrice,
@@ -32,7 +36,7 @@ public class CarDetailActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if (b != null && b.containsKey(KEY_CAR_PARAM)) {
-            CarModel car = (CarModel) b.get(KEY_CAR_PARAM);
+            car = (CarModel) b.get(KEY_CAR_PARAM);
 
             if (car != null) {
                 tvType.setText(car.getType());
@@ -43,5 +47,15 @@ public class CarDetailActivity extends AppCompatActivity {
                 tvDescription.setText(car.getDescription());
             }
         }
+
+        if (car == null || !car.isAvailable()) {
+            findViewById(R.id.btn_book_now).setVisibility(View.GONE);
+        }
+    }
+
+    public void bookNow(View v) {
+        Intent i = new Intent(CarDetailActivity.this, BookingActivity.class);
+        i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
+        startActivity(i);
     }
 }

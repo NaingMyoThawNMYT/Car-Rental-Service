@@ -11,6 +11,7 @@ public class CarModel implements Serializable {
     private int seats,
             year;
     private double price;
+    private boolean available;
 
     public String getId() {
         return id;
@@ -74,5 +75,13 @@ public class CarModel implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 }
