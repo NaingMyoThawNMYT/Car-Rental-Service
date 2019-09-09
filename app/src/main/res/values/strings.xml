@@ -22,4 +22,7 @@
     <string name="start_date">Start Date :</string>
     <string name="start_time">Start Time :</string>
     <string name="cancel">Cancel</string>
+    <string name="car_types">Car Types</string>
+    <string name="car_list">Car List</string>
+    <string name="dashboard">Dashboard</string>
 </resources>

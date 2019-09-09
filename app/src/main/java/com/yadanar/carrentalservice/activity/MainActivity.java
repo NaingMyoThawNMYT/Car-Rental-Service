@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void launchAdminMode(View v) {
-        // TODO: 9/8/19 go to admin activity
+        startActivity(new Intent(MainActivity.this, AdminActivity.class));
     }
 
     public void launchCustomerMode(View v) {

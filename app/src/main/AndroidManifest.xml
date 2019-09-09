@@ -9,6 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.CarTypesActivity" />
+        <activity android:name=".activity.CarListActivity" />
+        <activity android:name=".activity.DashboardActivity" />
+        <activity android:name=".activity.AdminActivity" />
         <activity android:name=".activity.BookingActivity" />
         <activity android:name=".activity.CarDetailActivity" />
         <activity android:name=".activity.CustomerActivity" />
