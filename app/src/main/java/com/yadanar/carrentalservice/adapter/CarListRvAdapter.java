@@ -10,17 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yadanar.carrentalservice.R;
-import com.yadanar.carrentalservice.model.CarModel;
+import com.yadanar.carrentalservice.model.Car;
 
 import java.util.List;
 
 public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyViewHolder> {
-    private List<CarModel> dataSet;
-    private CarListItemOnClickListener carListItemOnClickListener;
+    private List<Car> dataSet;
+    private CarListItemOnClickListener onClickListener;
 
-    public CarListRvAdapter(List<CarModel> dataSet, CarListItemOnClickListener carListItemOnClickListener) {
+    public CarListRvAdapter(List<Car> dataSet, CarListItemOnClickListener onClickListener) {
         this.dataSet = dataSet;
-        this.carListItemOnClickListener = carListItemOnClickListener;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
@@ -34,14 +34,14 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull CarListRvAdapter.MyViewHolder holder, int p) {
         final int position = holder.getAdapterPosition();
-        final CarModel car = dataSet.get(position);
+        final Car car = dataSet.get(position);
 
         holder.tvType.setText(car.getType());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                carListItemOnClickListener.onClick(car, position);
+                onClickListener.onClick(car, position);
             }
         });
     }
@@ -52,7 +52,7 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
     }
 
     public interface CarListItemOnClickListener {
-        void onClick(CarModel car, int position);
+        void onClick(Car car, int position);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

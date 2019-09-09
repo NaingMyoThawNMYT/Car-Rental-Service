@@ -2,7 +2,7 @@ package com.yadanar.carrentalservice.model;
 
 import java.io.Serializable;
 
-public class CarModel implements Serializable {
+public class Car implements Serializable {
     private String id,
             photoUrl,
             type,

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarListRvAdapter;
-import com.yadanar.carrentalservice.model.CarModel;
+import com.yadanar.carrentalservice.model.Car;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ public class CustomerActivity extends AppCompatActivity {
 
         final String[] types = new String[]{"A", "B", "C"};
         ArrayAdapter<String> spnAdapter = new ArrayAdapter<>(this,
-                R.layout.simple_spinner_item,
+                R.layout.simple_list_item,
                 types);
         spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         spnTypeList.setAdapter(spnAdapter);
@@ -51,9 +51,9 @@ public class CustomerActivity extends AppCompatActivity {
 
         rvCarList.setHasFixedSize(true);
 
-        List<CarModel> carList = new ArrayList<>();
+        List<Car> carList = new ArrayList<>();
         for (int i = 1; i <= 100; i++) {
-            CarModel car = new CarModel();
+            Car car = new Car();
             car.setType("Car " + i);
             car.setPrice(1000 * i);
             car.setYear(1000 * i);
@@ -65,7 +65,7 @@ public class CustomerActivity extends AppCompatActivity {
         CarListRvAdapter carListRvAdapter = new CarListRvAdapter(carList,
                 new CarListRvAdapter.CarListItemOnClickListener() {
                     @Override
-                    public void onClick(CarModel car, int position) {
+                    public void onClick(Car car, int position) {
                         Intent i = new Intent(CustomerActivity.this, CarDetailActivity.class);
                         i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
                         startActivity(i);

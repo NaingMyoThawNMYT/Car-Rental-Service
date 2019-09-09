@@ -25,4 +25,9 @@
     <string name="car_types">Car Types</string>
     <string name="car_list">Car List</string>
     <string name="dashboard">Dashboard</string>
+    <string name="add_new">Add New</string>
+    <string name="add">Add</string>
+    <string name="update">Update</string>
+    <string name="add_new_car_type">Add new car type</string>
+    <string name="edit_car_type">Edit car type</string>
 </resources>

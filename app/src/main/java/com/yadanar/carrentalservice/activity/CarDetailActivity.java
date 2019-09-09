@@ -8,12 +8,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.yadanar.carrentalservice.R;
-import com.yadanar.carrentalservice.model.CarModel;
+import com.yadanar.carrentalservice.model.Car;
 
 public class CarDetailActivity extends AppCompatActivity {
     public static final String KEY_CAR_PARAM = "key_car_param";
 
-    private CarModel car = null;
+    private Car car = null;
 
     private TextView tvType,
             tvPrice,
@@ -36,7 +36,7 @@ public class CarDetailActivity extends AppCompatActivity {
 
         Bundle b = getIntent().getExtras();
         if (b != null && b.containsKey(KEY_CAR_PARAM)) {
-            car = (CarModel) b.get(KEY_CAR_PARAM);
+            car = (Car) b.get(KEY_CAR_PARAM);
 
             if (car != null) {
                 tvType.setText(car.getType());
