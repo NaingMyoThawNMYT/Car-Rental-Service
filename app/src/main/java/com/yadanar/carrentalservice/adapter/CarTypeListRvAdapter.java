@@ -8,15 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.CarType;
 
 import java.util.List;
 
-public class CarTypeAdapter extends RecyclerView.Adapter<CarTypeAdapter.MyViewHolder> {
+public class CarTypeListRvAdapter extends RecyclerView.Adapter<CarTypeListRvAdapter.MyViewHolder> {
     private List<CarType> dataSet;
     private CarTypeListItemOnClickListener onClickListener;
 
-    public CarTypeAdapter(List<CarType> dataSet, CarTypeListItemOnClickListener onClickListener) {
+    public CarTypeListRvAdapter(List<CarType> dataSet, CarTypeListItemOnClickListener onClickListener) {
         this.dataSet = dataSet;
         this.onClickListener = onClickListener;
     }
@@ -25,8 +26,8 @@ public class CarTypeAdapter extends RecyclerView.Adapter<CarTypeAdapter.MyViewHo
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_1, parent, false);
-        return new CarTypeAdapter.MyViewHolder(v);
+                .inflate(R.layout.simple_list_item_1, parent, false);
+        return new CarTypeListRvAdapter.MyViewHolder(v);
     }
 
     @Override

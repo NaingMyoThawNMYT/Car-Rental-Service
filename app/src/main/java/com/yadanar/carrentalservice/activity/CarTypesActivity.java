@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yadanar.carrentalservice.R;
-import com.yadanar.carrentalservice.adapter.CarTypeAdapter;
+import com.yadanar.carrentalservice.adapter.CarTypeListRvAdapter;
 import com.yadanar.carrentalservice.model.CarType;
 
 import java.util.ArrayList;
@@ -43,8 +43,8 @@ public class CarTypesActivity extends AppCompatActivity {
             type.setName("Type " + i);
             carTypeList.add(type);
         }
-        CarTypeAdapter carTypeAdapter = new CarTypeAdapter(carTypeList,
-                new CarTypeAdapter.CarTypeListItemOnClickListener() {
+        CarTypeListRvAdapter carTypeListRvAdapter = new CarTypeListRvAdapter(carTypeList,
+                new CarTypeListRvAdapter.CarTypeListItemOnClickListener() {
                     @Override
                     public void onClick(CarType type, int position) {
                         openCarTypeEditDialog(CarTypesActivity.this, type);
@@ -55,7 +55,7 @@ public class CarTypesActivity extends AppCompatActivity {
                         openCarTypeDeleteDialog(CarTypesActivity.this, type);
                     }
                 });
-        rvCarTypeList.setAdapter(carTypeAdapter);
+        rvCarTypeList.setAdapter(carTypeListRvAdapter);
 
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
