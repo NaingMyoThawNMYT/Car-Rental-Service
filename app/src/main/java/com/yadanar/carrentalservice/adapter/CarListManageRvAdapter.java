@@ -36,7 +36,10 @@ public class CarListManageRvAdapter extends RecyclerView.Adapter<CarListManageRv
         final int position = holder.getAdapterPosition();
         final Car car = dataSet.get(position);
 
-        holder.tvCarType.setText(car.getType());
+        holder.tvType.setText(car.getType());
+        holder.tvPrice.setText(String.valueOf(car.getPrice()));
+        holder.tvColor.setText(car.getColor());
+        holder.tvSeats.setText(String.valueOf(car.getSeats()));
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,12 +55,18 @@ public class CarListManageRvAdapter extends RecyclerView.Adapter<CarListManageRv
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvCarType;
+        private TextView tvType,
+                tvPrice,
+                tvColor,
+                tvSeats;
 
         MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvCarType = itemView.findViewById(R.id.tv_car_type);
+            tvType = itemView.findViewById(R.id.tv_car_type);
+            tvPrice = itemView.findViewById(R.id.tv_price);
+            tvColor = itemView.findViewById(R.id.tv_color);
+            tvSeats = itemView.findViewById(R.id.tv_seats);
         }
     }
 }

@@ -30,4 +30,7 @@
     <string name="update">Update</string>
     <string name="add_new_car_type">Add new car type</string>
     <string name="edit_car_type">Edit car type</string>
+    <string name="car_type">Car Type</string>
+    <string name="start_time_title">Start Time</string>
+    <string name="end_time">End Time</string>
 </resources>

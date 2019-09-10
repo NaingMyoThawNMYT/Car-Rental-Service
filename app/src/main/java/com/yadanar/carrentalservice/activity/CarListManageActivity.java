@@ -1,9 +1,9 @@
 package com.yadanar.carrentalservice.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,9 +48,7 @@ public class CarListManageActivity extends AppCompatActivity {
                 new CarListItemOnClickListener() {
                     @Override
                     public void onClick(Car car, int position) {
-                        // TODO: 9/10/19 go to detail
-
-                        Toast.makeText(CarListManageActivity.this, car.getType(), Toast.LENGTH_SHORT).show();
+                        goToCarEditorActivity(car);
                     }
                 });
         rvCarList.setAdapter(adapter);
@@ -58,10 +56,14 @@ public class CarListManageActivity extends AppCompatActivity {
         (findViewById(R.id.btn_add_new)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 9/10/19 go to detail
-
-                Toast.makeText(CarListManageActivity.this, "Add new car", Toast.LENGTH_SHORT).show();
+                goToCarEditorActivity(null);
             }
         });
+    }
+
+    private void goToCarEditorActivity(Car car) {
+        Intent i = new Intent(this, CarEditorActivity.class);
+        i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
+        startActivity(i);
     }
 }
