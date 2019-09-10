@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarListRvAdapter;
+import com.yadanar.carrentalservice.listener.CarListItemOnClickListener;
 import com.yadanar.carrentalservice.model.Car;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class CustomerActivity extends AppCompatActivity {
             carList.add(car);
         }
         CarListRvAdapter carListRvAdapter = new CarListRvAdapter(carList,
-                new CarListRvAdapter.CarListItemOnClickListener() {
+                new CarListItemOnClickListener() {
                     @Override
                     public void onClick(Car car, int position) {
                         Intent i = new Intent(CustomerActivity.this, CarDetailActivity.class);

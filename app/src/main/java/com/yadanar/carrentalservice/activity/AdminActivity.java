@@ -21,10 +21,10 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void launchCarListActivity(View v) {
-        startActivity(new Intent(this, CarListActivity.class));
+        startActivity(new Intent(this, CarListManageActivity.class));
     }
 
     public void launchCarTypesActivity(View v) {
-        startActivity(new Intent(this, CarTypesActivity.class));
+        startActivity(new Intent(this, CarTypeListActivity.class));
     }
 }

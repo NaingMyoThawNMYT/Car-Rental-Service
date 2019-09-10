@@ -24,7 +24,7 @@ import com.yadanar.carrentalservice.model.CarType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarTypesActivity extends AppCompatActivity {
+public class CarTypeListActivity extends AppCompatActivity {
 
     private RecyclerView rvCarTypeList;
     private AppCompatButton btnAddNew;
@@ -32,10 +32,12 @@ public class CarTypesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_types);
+        setContentView(R.layout.activity_car_list_manage);
 
-        rvCarTypeList = findViewById(R.id.rv_car_type_list);
+        rvCarTypeList = findViewById(R.id.rv_car_list);
         btnAddNew = findViewById(R.id.btn_add_new);
+
+        ((TextView) findViewById(R.id.tv_title)).setText(R.string.car_types);
 
         List<CarType> carTypeList = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
@@ -47,20 +49,21 @@ public class CarTypesActivity extends AppCompatActivity {
                 new CarTypeListRvAdapter.CarTypeListItemOnClickListener() {
                     @Override
                     public void onClick(CarType type, int position) {
-                        openCarTypeEditDialog(CarTypesActivity.this, type);
+                        openCarTypeEditDialog(CarTypeListActivity.this, type);
                     }
 
                     @Override
                     public void onLongClick(CarType type, int position) {
-                        openCarTypeDeleteDialog(CarTypesActivity.this, type);
+                        openCarTypeDeleteDialog(CarTypeListActivity.this, type);
                     }
                 });
         rvCarTypeList.setAdapter(carTypeListRvAdapter);
+        rvCarTypeList.setHasFixedSize(true);
 
         btnAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openCarTypeEditDialog(CarTypesActivity.this, null);
+                openCarTypeEditDialog(CarTypeListActivity.this, null);
             }
         });
 
