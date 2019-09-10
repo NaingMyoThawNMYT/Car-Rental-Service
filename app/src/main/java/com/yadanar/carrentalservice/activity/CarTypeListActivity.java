@@ -97,6 +97,11 @@ public class CarTypeListActivity extends AppCompatActivity {
                 ? R.string.add_new_car_type
                 : R.string.edit_car_type));
 
+        edtCarType.setText(type == null
+                ? ""
+                : type.getName());
+        edtCarType.requestFocus();
+
         btnAdd.setText(getString(type == null
                 ? R.string.add
                 : R.string.update));
