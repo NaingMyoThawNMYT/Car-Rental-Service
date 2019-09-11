@@ -49,7 +49,7 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return dataSet == null ? 0 : dataSet.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

@@ -7,11 +7,12 @@
     <LinearLayout
         android:id="@+id/table_title"
         android:layout_width="0dp"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_app_title">
+        app:layout_constraintTop_toBottomOf="@+id/edt_search">
 
         <include layout="@layout/horizontal_divider" />
 
@@ -47,16 +48,6 @@
                 android:text="@string/start_time_title"
                 android:textStyle="bold" />
 
-            <include layout="@layout/vertical_divider" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="8dp"
-                android:text="@string/end_time"
-                android:textStyle="bold" />
-
         </LinearLayout>
 
         <include layout="@layout/horizontal_divider" />
@@ -74,6 +65,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/edt_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_rounded"
+        android:hint="@string/search_by_customer_or_car_type"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="16dp"
+        android:drawableEnd="@drawable/ic_search"
+        android:textColor="@android:color/white"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_app_title"
+        android:drawableRight="@drawable/ic_search" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_rented_car_list"
