@@ -77,8 +77,7 @@ public class DashboardActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                String searchTerm = editable.toString();
-                dashboardCarListRvAdapter.getFilter().filter(searchTerm);
+                dashboardCarListRvAdapter.getFilter().filter(editable.toString());
             }
         });
     }

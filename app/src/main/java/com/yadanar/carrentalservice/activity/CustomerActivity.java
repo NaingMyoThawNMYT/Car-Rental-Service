@@ -2,10 +2,13 @@ package com.yadanar.carrentalservice.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yadanar.carrentalservice.R;
@@ -17,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerActivity extends AppCompatActivity {
-
+    private AppCompatEditText edtSearch;
     private RecyclerView rvCarList;
 
     @Override
@@ -25,6 +28,7 @@ public class CustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
+        edtSearch = findViewById(R.id.edt_search);
         rvCarList = findViewById(R.id.rv_car_list);
 
         rvCarList.setHasFixedSize(true);
@@ -40,7 +44,7 @@ public class CustomerActivity extends AppCompatActivity {
             car.setAvailable(i % 2 == 0);
             carList.add(car);
         }
-        CarListRvAdapter carListRvAdapter = new CarListRvAdapter(carList,
+        final CarListRvAdapter carListRvAdapter = new CarListRvAdapter(carList,
                 new CarListItemOnClickListener() {
                     @Override
                     public void onClick(Car car, int position) {
@@ -57,6 +61,21 @@ public class CustomerActivity extends AppCompatActivity {
                 && b.getBoolean(AdminActivity.ADMIN_KEY)) {
             findViewById(R.id.fab).setVisibility(View.VISIBLE);
         }
+
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                carListRvAdapter.getFilter().filter(editable.toString());
+            }
+        });
     }
 
     public void addNewCar(View v) {
