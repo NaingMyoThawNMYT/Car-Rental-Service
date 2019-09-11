@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.yadanar.carrentalservice.R;
 
 public class AdminActivity extends AppCompatActivity {
+    public static final String ADMIN_KEY = "admin";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +22,9 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void launchCarListActivity(View v) {
-        startActivity(new Intent(this, CarListManageActivity.class));
+        Intent i = new Intent(this, CustomerActivity.class);
+        i.putExtra(ADMIN_KEY, true);
+        startActivity(i);
     }
 
     public void launchCarTypesActivity(View v) {

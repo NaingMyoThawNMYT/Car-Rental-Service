@@ -3,12 +3,9 @@ package com.yadanar.carrentalservice.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yadanar.carrentalservice.R;
@@ -21,7 +18,6 @@ import java.util.List;
 
 public class CustomerActivity extends AppCompatActivity {
 
-    private AppCompatSpinner spnTypeList;
     private RecyclerView rvCarList;
 
     @Override
@@ -29,26 +25,7 @@ public class CustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
-        spnTypeList = findViewById(R.id.spn_type_list);
         rvCarList = findViewById(R.id.rv_car_list);
-
-        final String[] types = new String[]{"A", "B", "C"};
-        ArrayAdapter<String> spnAdapter = new ArrayAdapter<>(this,
-                R.layout.simple_list_item,
-                types);
-        spnAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
-        spnTypeList.setAdapter(spnAdapter);
-
-        spnTypeList.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(CustomerActivity.this, types[i], Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
 
         rvCarList.setHasFixedSize(true);
 
@@ -73,5 +50,16 @@ public class CustomerActivity extends AppCompatActivity {
                     }
                 });
         rvCarList.setAdapter(carListRvAdapter);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null
+                && b.containsKey(AdminActivity.ADMIN_KEY)
+                && b.getBoolean(AdminActivity.ADMIN_KEY)) {
+            findViewById(R.id.fab).setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void addNewCar(View v) {
+        Toast.makeText(this, "Add new car", Toast.LENGTH_SHORT).show();
     }
 }
