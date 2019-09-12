@@ -20,6 +20,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.yadanar.carrentalservice.util.UiUtil.getText_;
+import static com.yadanar.carrentalservice.util.UiUtil.setError;
+
 public class BookingActivity extends AppCompatActivity {
 
     private int mYear,
@@ -97,11 +100,11 @@ public class BookingActivity extends AppCompatActivity {
 
     public void submitForm(View v) {
         Customer customer = new Customer();
-        customer.setName(getText(edtName));
-        customer.setId(getText(edtId));
-        customer.setEmail(getText(edtEmail));
-        customer.setPhone(getText(edtPhone));
-        customer.setAddress(getText(edtAddress));
+        customer.setName(getText_(edtName));
+        customer.setId(getText_(edtId));
+        customer.setEmail(getText_(edtEmail));
+        customer.setPhone(getText_(edtPhone));
+        customer.setAddress(getText_(edtAddress));
         customer.setGender(rdMale.isChecked() ? "Male" : "Female");
         customer.setDate(getDate().getTime());
 
@@ -137,14 +140,6 @@ public class BookingActivity extends AppCompatActivity {
 
     public void cancelBooking(View v) {
         finish();
-    }
-
-    private String getText(EditText edt) {
-        return edt.getText().toString();
-    }
-
-    private void setError(EditText edt) {
-        edt.setError("*required");
     }
 
     private Date getDate() {
