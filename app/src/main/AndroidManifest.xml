@@ -11,11 +11,15 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.CarEditorActivity" />
         <activity android:name=".activity.CarTypeListActivity" />
-        <activity android:name=".activity.DashboardActivity" />
+        <activity
+            android:name=".activity.DashboardActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activity.AdminActivity" />
         <activity android:name=".activity.BookingActivity" />
         <activity android:name=".activity.CarDetailActivity" />
-        <activity android:name=".activity.CustomerActivity" />
+        <activity
+            android:name=".activity.CustomerActivity"
+            android:windowSoftInputMode="stateHidden" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
