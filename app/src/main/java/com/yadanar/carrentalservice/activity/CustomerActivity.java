@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -20,6 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerActivity extends AppCompatActivity {
+    private boolean adminMode = false;
+
     private AppCompatEditText edtSearch;
     private RecyclerView rvCarList;
 
@@ -48,7 +49,10 @@ public class CustomerActivity extends AppCompatActivity {
                 new CarListItemOnClickListener() {
                     @Override
                     public void onClick(Car car, int position) {
-                        Intent i = new Intent(CustomerActivity.this, CarDetailActivity.class);
+                        Intent i = new Intent(CustomerActivity.this,
+                                adminMode
+                                        ? CarEditorActivity.class
+                                        : CarDetailActivity.class);
                         i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
                         startActivity(i);
                     }
@@ -60,6 +64,7 @@ public class CustomerActivity extends AppCompatActivity {
                 && b.containsKey(AdminActivity.ADMIN_KEY)
                 && b.getBoolean(AdminActivity.ADMIN_KEY)) {
             findViewById(R.id.fab).setVisibility(View.VISIBLE);
+            adminMode = true;
         }
 
         edtSearch.addTextChangedListener(new TextWatcher() {
@@ -79,6 +84,6 @@ public class CustomerActivity extends AppCompatActivity {
     }
 
     public void addNewCar(View v) {
-        Toast.makeText(this, "Add new car", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, CarEditorActivity.class));
     }
 }
