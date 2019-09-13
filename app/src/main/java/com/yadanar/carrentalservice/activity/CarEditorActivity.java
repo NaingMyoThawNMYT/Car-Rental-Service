@@ -1,13 +1,18 @@
 
 package com.yadanar.carrentalservice.activity;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -17,12 +22,16 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Car;
 
+import java.io.IOException;
+
 import static com.yadanar.carrentalservice.util.UiUtil.getNumber;
 import static com.yadanar.carrentalservice.util.UiUtil.getText_;
 import static com.yadanar.carrentalservice.util.UiUtil.setError;
 
 public class CarEditorActivity extends AppCompatActivity {
     private Car car = null;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_PICK_IMAGE = 2;
 
     private AppCompatTextView tvTitle;
     private AppCompatImageView imgCar;
@@ -39,6 +48,7 @@ public class CarEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_editor);
 
         tvTitle = findViewById(R.id.tv_title);
+        imgCar = findViewById(R.id.img_car);
         spnCarType = findViewById(R.id.spn_car_type);
         edtPrice = findViewById(R.id.edt_price);
         edtYear = findViewById(R.id.edt_year);
@@ -126,5 +136,39 @@ public class CarEditorActivity extends AppCompatActivity {
         // TODO: 9/12/19 save to firebase
 
         finish();
+    }
+
+    public void dispatchTakePictureIntent(View v) {
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Checking can current activity handle the intent?
+        if (i.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    public void dispatchPickImageIntent(View v) {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(i, REQUEST_PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == REQUEST_IMAGE_CAPTURE && data.getExtras() != null) {
+                Bundle b = data.getExtras();
+                Bitmap bitmap = (Bitmap) b.get("data");
+                imgCar.setImageBitmap(bitmap);
+            } else if (requestCode == REQUEST_PICK_IMAGE) {
+                Uri uri = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                    imgCar.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

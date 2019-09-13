@@ -51,16 +51,49 @@
             android:padding="16dp"
             tools:context=".activity.CarDetailActivity">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/img_car"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/img_layout"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_add_a_photo"
-                android:tint="@android:color/darker_gray"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:onClick="dispatchPickImageIntent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_height="200dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_car"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_add_a_photo"
+                    android:contentDescription="@string/app_name" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/img_btn_take_photo"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@drawable/bg_rounded"
+                    android:padding="8dp"
+                    android:tint="@android:color/white"
+                    android:onClick="dispatchTakePictureIntent"
+                    android:src="@drawable/ic_add_a_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/img_btn_pick_image"
+                    android:onClick="dispatchPickImageIntent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@drawable/bg_rounded"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:tint="@android:color/white"
+                    android:padding="8dp"
+                    app:layout_constraintEnd_toStartOf="@+id/img_btn_take_photo"
+                    android:src="@drawable/ic_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -69,7 +102,7 @@
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/img_car">
+                app:layout_constraintTop_toBottomOf="@+id/img_layout">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -80,7 +113,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="@string/car_type" />
+                        android:text="@string/label_car_type" />
 
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/spn_car_type"
@@ -101,21 +134,16 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:text="@string/price" />
+                        android:text="@string/price_per_hour" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_price"
                         android:layout_width="0dp"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_rounded"
                         android:layout_height="wrap_content"
-                        android:layout_weight="2.5"
+                        android:layout_weight="3"
                         android:inputType="number" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:text="@string/ks_hr"
-                        android:layout_width="0dp"
-                        android:layout_weight="0.5"
-                        android:gravity="end"
-                        android:layout_height="wrap_content"/>
 
                 </LinearLayout>
 
@@ -133,6 +161,8 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_year"
                         android:layout_width="0dp"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_rounded"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:inputType="number" />
@@ -153,6 +183,8 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_seat"
                         android:layout_width="0dp"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_rounded"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:inputType="number" />
@@ -173,6 +205,8 @@
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_color"
                         android:layout_width="0dp"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_rounded"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:inputType="text" />
@@ -192,10 +226,12 @@
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_description"
+                        android:padding="8dp"
+                        android:background="@drawable/bg_rounded"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
-                        android:inputType="text" />
+                        android:inputType="textMultiLine" />
 
                 </LinearLayout>
 
