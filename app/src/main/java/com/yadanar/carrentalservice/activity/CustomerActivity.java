@@ -1,6 +1,7 @@
 package com.yadanar.carrentalservice.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yadanar.carrentalservice.R;
@@ -81,6 +83,23 @@ public class CustomerActivity extends AppCompatActivity {
                 carListRvAdapter.getFilter().filter(editable.toString());
             }
         });
+
+        setLayoutManager(getResources().getConfiguration());
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        setLayoutManager(newConfig);
+    }
+
+    private void setLayoutManager(Configuration configuration) {
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getBaseContext(),
+                configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+                        ? 3
+                        : 2);
+        rvCarList.setLayoutManager(gridLayoutManager);
     }
 
     public void addNewCar(View v) {
