@@ -1,9 +1,9 @@
 package com.yadanar.carrentalservice.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 
 public class DashboardActivity extends AppCompatActivity {
+    public static final String KEY_RENTED_CAR_PARAM = "key_rented_car_param";
+
     private DashboardCarListRvAdapter dashboardCarListRvAdapter;
 
     private AppCompatEditText edtSearch;
@@ -57,11 +59,10 @@ public class DashboardActivity extends AppCompatActivity {
                 new DashboardCarListRvAdapter.OnItemClickListener() {
                     @Override
                     public void onClick(RentedCar rentedCar, int position) {
-                        // TODO: 9/11/19 go to check out
-
-                        Toast.makeText(DashboardActivity.this,
-                                rentedCar.getCustomer().getName(),
-                                Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(DashboardActivity.this,
+                                CheckOutActivity.class);
+                        i.putExtra(KEY_RENTED_CAR_PARAM, rentedCar);
+                        startActivity(i);
                     }
                 });
         rvRentedCarList.setAdapter(dashboardCarListRvAdapter);

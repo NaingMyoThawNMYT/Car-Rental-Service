@@ -1,6 +1,8 @@
 package com.yadanar.carrentalservice.model;
 
-public class RentedCar {
+import java.io.Serializable;
+
+public class RentedCar implements Serializable {
     private Customer customer;
     private Car car;
 

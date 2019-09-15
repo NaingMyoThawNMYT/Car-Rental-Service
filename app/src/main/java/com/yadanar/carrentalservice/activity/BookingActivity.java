@@ -16,10 +16,11 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Customer;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.yadanar.carrentalservice.util.DateUtil.displayDateFormat;
+import static com.yadanar.carrentalservice.util.DateUtil.displayTimeFormat;
 import static com.yadanar.carrentalservice.util.UiUtil.getText_;
 import static com.yadanar.carrentalservice.util.UiUtil.setError;
 
@@ -146,13 +147,5 @@ public class BookingActivity extends AppCompatActivity {
         final Calendar c = Calendar.getInstance();
         c.set(mYear, mMonth, mDay, mHour, mMinute);
         return c.getTime();
-    }
-
-    private String displayDateFormat(Date date) {
-        return new SimpleDateFormat("dd/MM/yyyy").format(date);
-    }
-
-    private String displayTimeFormat(Date date) {
-        return new SimpleDateFormat("hh:mm a").format(date);
     }
 }

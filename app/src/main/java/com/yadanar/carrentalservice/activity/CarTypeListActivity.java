@@ -17,6 +17,7 @@ import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarTypeListRvAdapter;
 import com.yadanar.carrentalservice.model.CarType;
@@ -27,7 +28,7 @@ import java.util.List;
 public class CarTypeListActivity extends AppCompatActivity {
 
     private RecyclerView rvCarTypeList;
-    private AppCompatButton btnAddNew;
+    private FloatingActionButton fabAddNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class CarTypeListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_list_manage);
 
         rvCarTypeList = findViewById(R.id.rv_car_list);
-        btnAddNew = findViewById(R.id.btn_add_new);
+        fabAddNew = findViewById(R.id.fab_add_new);
 
         ((TextView) findViewById(R.id.tv_title)).setText(R.string.car_types);
 
@@ -60,7 +61,7 @@ public class CarTypeListActivity extends AppCompatActivity {
         rvCarTypeList.setAdapter(carTypeListRvAdapter);
         rvCarTypeList.setHasFixedSize(true);
 
-        btnAddNew.setOnClickListener(new View.OnClickListener() {
+        fabAddNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openCarTypeEditDialog(CarTypeListActivity.this, null);

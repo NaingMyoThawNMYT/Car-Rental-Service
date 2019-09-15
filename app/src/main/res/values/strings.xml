@@ -31,8 +31,12 @@
     <string name="edit_car_type">Edit car type</string>
     <string name="car_type">Car Type</string>
     <string name="start_time_title">Start Time</string>
-    <string name="search_by_customer_or_car_type">Search by customer or car type</string>
+    <string name="search">Search</string>
     <string name="edit">Edit</string>
     <string name="price_per_hour">Price (per/hour) :</string>
     <string name="label_car_type">Car Type :</string>
+    <string name="label_customer">Customer :</string>
+    <string name="calculate">Calculate</string>
+    <string name="label_total_duration">Total Duration :</string>
+    <string name="label_total_amount">Total Amount :</string>
 </resources>
