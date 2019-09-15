@@ -19,8 +19,8 @@ import com.yadanar.carrentalservice.model.Customer;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.yadanar.carrentalservice.util.DateUtil.displayDateFormat;
-import static com.yadanar.carrentalservice.util.DateUtil.displayTimeFormat;
+import static com.yadanar.carrentalservice.util.DateUtil.displayDateOnlyFormat;
+import static com.yadanar.carrentalservice.util.DateUtil.displayTimeOnlyFormat;
 import static com.yadanar.carrentalservice.util.UiUtil.getText_;
 import static com.yadanar.carrentalservice.util.UiUtil.setError;
 
@@ -64,8 +64,8 @@ public class BookingActivity extends AppCompatActivity {
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute = c.get(Calendar.MINUTE);
 
-        btnStartDate.setText(displayDateFormat(getDate()));
-        btnStartTime.setText(displayTimeFormat(getDate()));
+        btnStartDate.setText(displayDateOnlyFormat(getDate()));
+        btnStartTime.setText(displayTimeOnlyFormat(getDate()));
     }
 
     public void openDatePickerDialog(View v) {
@@ -78,7 +78,7 @@ public class BookingActivity extends AppCompatActivity {
                         mMonth = monthOfYear + 1;
                         mDay = dayOfMonth;
 
-                        btnStartDate.setText(displayDateFormat(getDate()));
+                        btnStartDate.setText(displayDateOnlyFormat(getDate()));
                     }
                 }, mYear, mMonth, mDay);
         datePickerDialog.show();
@@ -93,7 +93,7 @@ public class BookingActivity extends AppCompatActivity {
                         mHour = hourOfDay;
                         mMinute = minute;
 
-                        btnStartTime.setText(displayTimeFormat(getDate()));
+                        btnStartTime.setText(displayTimeOnlyFormat(getDate()));
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
