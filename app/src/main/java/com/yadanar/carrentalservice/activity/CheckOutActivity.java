@@ -32,6 +32,12 @@ public class CheckOutActivity extends AppCompatActivity {
 
     private AppCompatButton btnStartTime,
             btnEndTime;
+    private TextView tvCustomer,
+            tvCarType,
+            tvPrice,
+            tvYear,
+            tvSeat,
+            tvColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,12 @@ public class CheckOutActivity extends AppCompatActivity {
 
         btnStartTime = findViewById(R.id.btn_start_time);
         btnEndTime = findViewById(R.id.btn_end_time);
+        tvCustomer = findViewById(R.id.tv_customer);
+        tvCarType = findViewById(R.id.tv_car_type);
+        tvPrice = findViewById(R.id.tv_price);
+        tvYear = findViewById(R.id.tv_year);
+        tvSeat = findViewById(R.id.tv_seats);
+        tvColor = findViewById(R.id.tv_color);
 
         Bundle b = getIntent().getExtras();
         if (b != null && b.containsKey(DashboardActivity.KEY_RENTED_CAR_PARAM)) {
@@ -56,6 +68,12 @@ public class CheckOutActivity extends AppCompatActivity {
                 mMinute = c.get(Calendar.MINUTE);
 
                 btnStartTime.setText(DateUtil.displayDateAndTimeFormat(getDate()));
+                tvCustomer.setText(rentedCar.getCustomer().getName());
+                tvCarType.setText(rentedCar.getCar().getType());
+                tvPrice.setText(String.valueOf(rentedCar.getCar().getPrice()));
+                tvYear.setText(String.valueOf(rentedCar.getCar().getYear()));
+                tvSeat.setText(String.valueOf(rentedCar.getCar().getSeats()));
+                tvColor.setText(rentedCar.getCar().getColor());
             }
         }
     }
@@ -74,7 +92,7 @@ public class CheckOutActivity extends AppCompatActivity {
         double diffHours = NumberUtil.getOneDigit(DateUtil.hoursDifference(getDate(), new Date(rentedCar.getCustomer().getDate())));
 
         tvTotalDuration.setText(diffHours + " hr");
-        tvTotalAmount.setText(String.valueOf(rentedCar.getCar().getPrice() * diffHours));
+        tvTotalAmount.setText(rentedCar.getCar().getPrice() * diffHours + " ks");
 
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override

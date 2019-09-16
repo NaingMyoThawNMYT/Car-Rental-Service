@@ -24,101 +24,71 @@
                 android:layout_height="wrap_content"/>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/FormFieldLayout">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    style="@style/FormLeftLabel"
                     android:text="@string/name" />
 
                 <EditText
                     android:id="@+id/edt_name"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    style="@style/FormRightField"
                     android:inputType="text" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/FormFieldLayout">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    style="@style/FormLeftLabel"
                     android:text="@string/nrc_id" />
 
                 <EditText
                     android:id="@+id/edt_id"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    style="@style/FormRightField"
                     android:inputType="text" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/FormFieldLayout">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    style="@style/FormLeftLabel"
                     android:text="@string/email" />
 
                 <EditText
                     android:id="@+id/edt_email"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    style="@style/FormRightField"
                     android:inputType="textEmailAddress" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/FormFieldLayout">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    style="@style/FormLeftLabel"
                     android:text="@string/phone" />
 
                 <EditText
                     android:id="@+id/edt_phone"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    style="@style/FormRightField"
                     android:inputType="phone" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/FormFieldLayout">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    style="@style/FormLeftLabel"
                     android:text="@string/address" />
 
                 <EditText
                     android:id="@+id/edt_address"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    style="@style/FormRightField"
                     android:inputType="text" />
 
             </LinearLayout>
@@ -154,46 +124,30 @@
             </RadioGroup>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/FormFieldLayout">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    style="@style/FormLeftLabel"
                     android:text="@string/start_date" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_start_date"
-                    android:layout_width="0dp"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_weight="3"
-                    android:onClick="openDatePickerDialog"
-                    android:gravity="center_vertical"
-                    android:layout_height="wrap_content"/>
+                    style="@style/FormRightField"
+                    android:onClick="openDatePickerDialog"/>
 
             </LinearLayout>
 
             <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/FormFieldLayout">
 
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    style="@style/FormLeftLabel"
                     android:text="@string/start_time" />
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_start_time"
-                    android:layout_width="0dp"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_weight="3"
-                    android:onClick="openTimePickerDialog"
-                    android:gravity="center_vertical"
-                    android:layout_height="wrap_content"/>
+                    style="@style/FormRightField"
+                    android:onClick="openTimePickerDialog"/>
 
             </LinearLayout>
 

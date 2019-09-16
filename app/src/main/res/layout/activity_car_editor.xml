@@ -105,14 +105,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/img_layout">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    style="@style/FormFieldLayout">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/FormLeftLabel"
                         android:text="@string/label_car_type" />
 
                     <androidx.appcompat.widget.AppCompatSpinner
@@ -126,111 +122,71 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    style="@style/FormFieldLayout">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/FormLeftLabel"
                         android:text="@string/price_per_hour" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_price"
-                        android:layout_width="0dp"
-                        android:padding="8dp"
-                        android:background="@drawable/bg_rounded"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        style="@style/FormRightField"
                         android:inputType="number" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    style="@style/FormFieldLayout">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/FormLeftLabel"
                         android:text="@string/year" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_year"
-                        android:layout_width="0dp"
-                        android:padding="8dp"
-                        android:background="@drawable/bg_rounded"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        style="@style/FormRightField"
                         android:inputType="number" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    style="@style/FormFieldLayout">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/FormLeftLabel"
                         android:text="@string/seats" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_seat"
-                        android:layout_width="0dp"
-                        android:padding="8dp"
-                        android:background="@drawable/bg_rounded"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        style="@style/FormRightField"
                         android:inputType="number" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    style="@style/FormFieldLayout">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/FormLeftLabel"
                         android:text="@string/color" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_color"
-                        android:layout_width="0dp"
-                        android:padding="8dp"
-                        android:background="@drawable/bg_rounded"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        style="@style/FormRightField"
                         android:inputType="text" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="8dp">
+                    style="@style/FormFieldLayout">
 
                     <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/FormLeftLabel"
                         android:text="@string/description" />
 
                     <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edt_description"
-                        android:padding="8dp"
-                        android:background="@drawable/bg_rounded"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        style="@style/FormRightField"
                         android:inputType="textMultiLine" />
 
                 </LinearLayout>
