@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "428951184516",
+    "firebase_url": "https://car-rental-service-8d89e.firebaseio.com",
+    "project_id": "car-rental-service-8d89e",
+    "storage_bucket": "car-rental-service-8d89e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:428951184516:android:1fc8168a5757d4496fced1",
+        "android_client_info": {
+          "package_name": "com.yadanar.carrentalservice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "428951184516-hfja14be95o1kn0tqh4s9lq5i8jepau7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yadanar.carrentalservice",
+            "certificate_hash": "54544216025f373833d5840864f390ac3909950d"
+          }
+        },
+        {
+          "client_id": "428951184516-uvqq46eieoq3ligp0g6bok1h4l6gdlv5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAW3kyqlmrrLrvcWqZaAozhpRifpJac1g4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "428951184516-uvqq46eieoq3ligp0g6bok1h4l6gdlv5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

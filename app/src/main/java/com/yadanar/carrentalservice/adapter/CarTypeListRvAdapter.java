@@ -11,15 +11,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.CarType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarTypeListRvAdapter extends RecyclerView.Adapter<CarTypeListRvAdapter.MyViewHolder> {
-    private List<CarType> dataSet;
+    private List<CarType> dataSet = new ArrayList<>();
     private CarTypeListItemOnClickListener onClickListener;
 
-    public CarTypeListRvAdapter(List<CarType> dataSet, CarTypeListItemOnClickListener onClickListener) {
-        this.dataSet = dataSet;
+    public CarTypeListRvAdapter(CarTypeListItemOnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+    }
+
+    public void add(CarType type) {
+        this.dataSet.add(type);
+        notifyItemInserted(this.dataSet.size());
     }
 
     @NonNull

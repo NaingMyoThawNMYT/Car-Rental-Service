@@ -12,20 +12,58 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarTypeListRvAdapter;
 import com.yadanar.carrentalservice.model.CarType;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.yadanar.carrentalservice.storage.FirebaseHelper;
 
 public class CarTypeListActivity extends AppCompatActivity {
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference dbRef = database.getReference(FirebaseHelper.CAR_TYPE_LIST_TABLE_NAME);
+    private ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            CarType type = new CarType();
+            type.setId(dataSnapshot.getKey());
+            type.setName(dataSnapshot.getValue().toString());
+            carTypeListRvAdapter.add(type);
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Toast.makeText(CarTypeListActivity.this, "onChildChanged()", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+            Toast.makeText(CarTypeListActivity.this, "onChildRemoved()", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+            Toast.makeText(CarTypeListActivity.this, "onChildMoved()", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+            Toast.makeText(CarTypeListActivity.this, "onCancelled()", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private CarTypeListRvAdapter carTypeListRvAdapter;
 
     private RecyclerView rvCarTypeList;
     private FloatingActionButton fabAddNew;
@@ -40,13 +78,7 @@ public class CarTypeListActivity extends AppCompatActivity {
 
         ((TextView) findViewById(R.id.tv_title)).setText(R.string.car_types);
 
-        List<CarType> carTypeList = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
-            CarType type = new CarType();
-            type.setName("Type " + i);
-            carTypeList.add(type);
-        }
-        CarTypeListRvAdapter carTypeListRvAdapter = new CarTypeListRvAdapter(carTypeList,
+        carTypeListRvAdapter = new CarTypeListRvAdapter(
                 new CarTypeListRvAdapter.CarTypeListItemOnClickListener() {
                     @Override
                     public void onClick(CarType type, int position) {
@@ -69,6 +101,8 @@ public class CarTypeListActivity extends AppCompatActivity {
         });
 
         setLayoutManager(getResources().getConfiguration());
+
+        dbRef.addChildEventListener(childEventListener);
     }
 
     @Override
@@ -76,6 +110,12 @@ public class CarTypeListActivity extends AppCompatActivity {
         super.onConfigurationChanged(newConfig);
 
         setLayoutManager(newConfig);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbRef.removeEventListener(childEventListener);
     }
 
     private void setLayoutManager(Configuration configuration) {
@@ -90,7 +130,7 @@ public class CarTypeListActivity extends AppCompatActivity {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_car_type);
 
-        TextView tvTitle = dialog.findViewById(R.id.tv_title);
+        final TextView tvTitle = dialog.findViewById(R.id.tv_title);
         final EditText edtCarType = dialog.findViewById(R.id.edt_car_type);
         AppCompatButton btnAdd = dialog.findViewById(R.id.btn_add_new);
 
@@ -116,14 +156,11 @@ public class CarTypeListActivity extends AppCompatActivity {
                 }
 
                 if (type == null) {
-                    // TODO: 9/9/19 add new car type
+                    String key = dbRef.push().getKey();
+                    dbRef.child(key).setValue(s);
                 } else {
-                    type.setName(s);
-
-                    // TODO: 9/9/19 update car type
+                    dbRef.child(type.getId()).setValue(s);
                 }
-
-                Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
 
                 dialog.dismiss();
             }
