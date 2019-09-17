@@ -27,6 +27,26 @@ public class CarTypeListRvAdapter extends RecyclerView.Adapter<CarTypeListRvAdap
         notifyItemInserted(this.dataSet.size());
     }
 
+    public void update(CarType type) {
+        for (int i = 0; i < this.dataSet.size(); i++) {
+            if (type.getId().equals(this.dataSet.get(i).getId())) {
+                this.dataSet.set(i, type);
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    public void remove(CarType type) {
+        for (int i = 0; i < this.dataSet.size(); i++) {
+            if (type.getId().equals(this.dataSet.get(i).getId())) {
+                this.dataSet.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
+    }
+
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

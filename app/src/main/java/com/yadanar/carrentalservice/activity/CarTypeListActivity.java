@@ -36,20 +36,17 @@ public class CarTypeListActivity extends AppCompatActivity {
     private ChildEventListener childEventListener = new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            CarType type = new CarType();
-            type.setId(dataSnapshot.getKey());
-            type.setName(dataSnapshot.getValue().toString());
-            carTypeListRvAdapter.add(type);
+            carTypeListRvAdapter.add(CarType.parseCarType(dataSnapshot));
         }
 
         @Override
         public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-            Toast.makeText(CarTypeListActivity.this, "onChildChanged()", Toast.LENGTH_SHORT).show();
+            carTypeListRvAdapter.update(CarType.parseCarType(dataSnapshot));
         }
 
         @Override
         public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-            Toast.makeText(CarTypeListActivity.this, "onChildRemoved()", Toast.LENGTH_SHORT).show();
+            carTypeListRvAdapter.remove(CarType.parseCarType(dataSnapshot));
         }
 
         @Override
@@ -176,7 +173,7 @@ public class CarTypeListActivity extends AppCompatActivity {
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(context, type.getName(), Toast.LENGTH_SHORT).show();
+                dbRef.child(type.getId()).removeValue();
             }
         });
 
