@@ -3,6 +3,7 @@ package com.yadanar.carrentalservice.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
@@ -19,16 +21,23 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Car;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static com.yadanar.carrentalservice.util.UiUtil.getNumber;
 import static com.yadanar.carrentalservice.util.UiUtil.getText_;
-import static com.yadanar.carrentalservice.util.UiUtil.setError;
 
 public class CarEditorActivity extends AppCompatActivity {
+    private StorageReference mStorageRef;
+
     private Car car = null;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_PICK_IMAGE = 2;
@@ -113,29 +122,51 @@ public class CarEditorActivity extends AppCompatActivity {
         car.setColor(getText_(edtColor));
         car.setDescription(getText_(edtDescription));
 
-        if (car.getPrice() <= 0) {
-            setError(edtPrice);
-            return;
-        }
+//        if (car.getPrice() <= 0) {
+//            setError(edtPrice);
+//            return;
+//        }
+//
+//        if (car.getYear() <= 0) {
+//            setError(edtYear);
+//            return;
+//        }
+//
+//        if (car.getSeats() <= 0) {
+//            setError(edtSeat);
+//            return;
+//        }
+//
+//        if (TextUtils.isEmpty(car.getColor())) {
+//            setError(edtColor);
+//            return;
+//        }
 
-        if (car.getYear() <= 0) {
-            setError(edtYear);
-            return;
-        }
+        // Get the data from an ImageView as bytes
+        imgCar.setDrawingCacheEnabled(true);
+        imgCar.buildDrawingCache();
+        Bitmap bitmap = ((BitmapDrawable) imgCar.getDrawable()).getBitmap();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
 
-        if (car.getSeats() <= 0) {
-            setError(edtSeat);
-            return;
-        }
+        mStorageRef = FirebaseStorage.getInstance().getReference().child("Car Type " + System.currentTimeMillis());
+        UploadTask uploadTask = mStorageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(CarEditorActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
 
-        if (TextUtils.isEmpty(car.getColor())) {
-            setError(edtColor);
-            return;
-        }
+                Toast.makeText(CarEditorActivity.this, "Image is saved successfully!", Toast.LENGTH_SHORT).show();
 
-        // TODO: 9/12/19 save to firebase
-
-        finish();
+                // TODO: 9/17/19 save data
+            }
+        });
     }
 
     public void dispatchTakePictureIntent(View v) {
@@ -155,6 +186,8 @@ public class CarEditorActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == REQUEST_IMAGE_CAPTURE && data.getExtras() != null) {
                 Bundle b = data.getExtras();
