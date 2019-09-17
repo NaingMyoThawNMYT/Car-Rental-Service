@@ -1,9 +1,11 @@
 
 package com.yadanar.carrentalservice.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,20 +25,53 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Car;
+import com.yadanar.carrentalservice.storage.FirebaseHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import static com.yadanar.carrentalservice.util.UiUtil.getNumber;
 import static com.yadanar.carrentalservice.util.UiUtil.getText_;
+import static com.yadanar.carrentalservice.util.UiUtil.setError;
 
 public class CarEditorActivity extends AppCompatActivity {
     private StorageReference mStorageRef;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference dbRef = database.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
+    private ChildEventListener childEventListener = new ChildEventListener() {
+        @Override
+        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+        }
+
+        @Override
+        public void onCancelled(@NonNull DatabaseError databaseError) {
+        }
+    };
 
     private Car car = null;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -50,6 +85,7 @@ public class CarEditorActivity extends AppCompatActivity {
             edtSeat,
             edtColor,
             edtDescription;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +143,10 @@ public class CarEditorActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+
+        dbRef.addChildEventListener(childEventListener);
+
+        dialog = new ProgressDialog(this);
     }
 
     public void cancel(View v) {
@@ -114,7 +154,7 @@ public class CarEditorActivity extends AppCompatActivity {
     }
 
     public void save(View v) {
-        Car car = new Car();
+        final Car car = new Car();
         car.setType((String) spnCarType.getSelectedItem());
         car.setPrice(getNumber(edtPrice));
         car.setYear(getNumber(edtYear));
@@ -122,66 +162,41 @@ public class CarEditorActivity extends AppCompatActivity {
         car.setColor(getText_(edtColor));
         car.setDescription(getText_(edtDescription));
 
-//        if (car.getPrice() <= 0) {
-//            setError(edtPrice);
-//            return;
-//        }
-//
-//        if (car.getYear() <= 0) {
-//            setError(edtYear);
-//            return;
-//        }
-//
-//        if (car.getSeats() <= 0) {
-//            setError(edtSeat);
-//            return;
-//        }
-//
-//        if (TextUtils.isEmpty(car.getColor())) {
-//            setError(edtColor);
-//            return;
-//        }
+        if (car.getPrice() <= 0) {
+            setError(edtPrice);
+            return;
+        }
 
-        // Get the data from an ImageView as bytes
-        imgCar.setDrawingCacheEnabled(true);
-        imgCar.buildDrawingCache();
-        Bitmap bitmap = ((BitmapDrawable) imgCar.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
+        if (car.getYear() <= 0) {
+            setError(edtYear);
+            return;
+        }
 
-        mStorageRef = FirebaseStorage.getInstance().getReference().child("Car Type " + System.currentTimeMillis());
-        UploadTask uploadTask = mStorageRef.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
+        if (car.getSeats() <= 0) {
+            setError(edtSeat);
+            return;
+        }
+
+        if (TextUtils.isEmpty(car.getColor())) {
+            setError(edtColor);
+            return;
+        }
+
+        dialog.setMessage("Saving...");
+        dialog.setCancelable(false);
+        dialog.show();
+        uploadCar(new OnSuccessListener() {
             @Override
-            public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(CarEditorActivity.this, exception.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-
-                Toast.makeText(CarEditorActivity.this, "Image is saved successfully!", Toast.LENGTH_SHORT).show();
-
-                // TODO: 9/17/19 save data
+            public void onSuccess(Object o) {
+                uploadImage();
             }
         });
     }
 
-    public void dispatchTakePictureIntent(View v) {
-        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Checking can current activity handle the intent?
-        if (i.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
-        }
-    }
-
-    public void dispatchPickImageIntent(View v) {
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(i, REQUEST_PICK_IMAGE);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dbRef.removeEventListener(childEventListener);
     }
 
     @Override
@@ -203,5 +218,89 @@ public class CarEditorActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public void dispatchTakePictureIntent(View v) {
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Checking can current activity handle the intent?
+        if (i.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(i, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    public void dispatchPickImageIntent(View v) {
+        Intent i = new Intent();
+        i.setType("image/*");
+        i.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(i, REQUEST_PICK_IMAGE);
+    }
+
+    private void uploadCar(OnSuccessListener onSuccessListener) {
+        String key = dbRef.push().getKey();
+        car.setId(key);
+        dbRef.child(car.getId())
+                .setValue(car)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.dismiss();
+                        Toast.makeText(CarEditorActivity.this,
+                                e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnSuccessListener(onSuccessListener);
+    }
+
+    private void uploadImage() {
+        // Get the data from an ImageView as bytes
+        imgCar.setDrawingCacheEnabled(true);
+        imgCar.buildDrawingCache();
+        Drawable drawable = imgCar.getDrawable();
+        if (drawable == null) {
+            showSuccessToastAndFinishActivity();
+            return;
+        }
+
+        Bitmap bitmap;
+        try {
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+        } catch (ClassCastException e) {
+            showSuccessToastAndFinishActivity();
+            return;
+        }
+
+        if (TextUtils.isEmpty(car.getId())) {
+            showSuccessToastAndFinishActivity();
+            return;
+        }
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        mStorageRef = FirebaseStorage.getInstance().getReference().child(car.getId());
+        UploadTask uploadTask = mStorageRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(CarEditorActivity.this,
+                        exception.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                showSuccessToastAndFinishActivity();
+            }
+        });
+    }
+
+    private void showSuccessToastAndFinishActivity() {
+        dialog.dismiss();
+        Toast.makeText(CarEditorActivity.this,
+                car.getType() + " is saved successfully.",
+                Toast.LENGTH_SHORT).show();
+        finish();
     }
 }

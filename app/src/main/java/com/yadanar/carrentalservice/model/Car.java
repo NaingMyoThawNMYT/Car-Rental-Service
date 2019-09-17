@@ -11,7 +11,7 @@ public class Car implements Serializable {
     private int seats,
             year;
     private double price;
-    private boolean available;
+    private boolean available = true;
 
     public String getId() {
         return id;
