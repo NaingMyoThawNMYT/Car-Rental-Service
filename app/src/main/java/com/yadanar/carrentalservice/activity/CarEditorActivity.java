@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -139,17 +138,6 @@ public class CarEditorActivity extends AppCompatActivity {
         final CarTypeArrayAdapter spnAdapter = new CarTypeArrayAdapter(CarEditorActivity.this);
         spnCarType.setAdapter(spnAdapter);
 
-        spnCarType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(CarEditorActivity.this, carTypeList.get(i).getName(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
-
         dialog.setMessage("Loading...");
         dialog.setCancelable(false);
         dialog.show();
@@ -162,6 +150,11 @@ public class CarEditorActivity extends AppCompatActivity {
                     carTypeList.add(CarType.parseCarType(snapshot));
                 }
                 spnAdapter.setDataSet(carTypeList);
+
+                if (car != null) {
+                    int position = spnAdapter.getItemPosition(car.getType());
+                    spnCarType.setSelection(position);
+                }
             }
 
             @Override
@@ -322,7 +315,7 @@ public class CarEditorActivity extends AppCompatActivity {
     private void showSuccessToastAndFinishActivity() {
         dialog.dismiss();
         Toast.makeText(CarEditorActivity.this,
-                car.getType() + " is saved successfully.",
+                "Saved successfully.",
                 Toast.LENGTH_SHORT).show();
         finish();
     }

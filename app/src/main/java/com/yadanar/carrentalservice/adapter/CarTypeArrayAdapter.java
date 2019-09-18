@@ -36,6 +36,16 @@ public class CarTypeArrayAdapter extends ArrayAdapter<CarType> {
         return dataSet.get(position);
     }
 
+    public int getItemPosition(String itemId) {
+        for (int i = 0; i < this.dataSet.size(); i++) {
+            if (itemId.equals(this.dataSet.get(i).getId())) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
