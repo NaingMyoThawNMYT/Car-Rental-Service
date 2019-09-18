@@ -62,6 +62,7 @@ public class CustomerActivity extends AppCompatActivity {
                                         ? CarEditorActivity.class
                                         : CarDetailActivity.class);
                         i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
+                        i.putExtra(CarDetailActivity.KEY_CAR_TYPE_NAME_PARAM, car.getTypeName());
                         startActivity(i);
                     }
                 });

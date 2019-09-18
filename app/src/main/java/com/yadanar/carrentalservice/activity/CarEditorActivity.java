@@ -23,7 +23,6 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -52,30 +51,6 @@ public class CarEditorActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dbRef = database.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
     private DatabaseReference dbRefCarType = database.getReference(FirebaseHelper.CAR_TYPE_LIST_TABLE_NAME);
-    private ChildEventListener childEventListener = new ChildEventListener() {
-        @Override
-        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-        }
-
-        @Override
-        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-        }
-
-        @Override
-        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-        }
-
-        @Override
-        public void onCancelled(@NonNull DatabaseError databaseError) {
-        }
-    };
 
     private Car car = null;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
@@ -97,8 +72,6 @@ public class CarEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_editor);
 
-        dbRef.addChildEventListener(childEventListener);
-
         dialog = new ProgressDialog(this);
 
         tvTitle = findViewById(R.id.tv_title);
@@ -119,7 +92,7 @@ public class CarEditorActivity extends AppCompatActivity {
                 if (car != null) {
                     title = getString(R.string.edit);
 
-                    // TODO: 9/12/19 set to spinner
+                    // TODO: 9/19/19 fetch and set car photo
                     edtPrice.setText(String.valueOf(car.getPrice()));
                     edtYear.setText(String.valueOf(car.getYear()));
                     edtSeat.setText(String.valueOf(car.getSeats()));
@@ -209,12 +182,6 @@ public class CarEditorActivity extends AppCompatActivity {
                 uploadImage();
             }
         });
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        dbRef.removeEventListener(childEventListener);
     }
 
     @Override

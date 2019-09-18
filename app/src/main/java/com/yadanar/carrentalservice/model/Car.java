@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class Car implements Serializable {
     private String id,
-            photoUrl,
             type,
             color,
             description;
@@ -20,14 +19,6 @@ public class Car implements Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getPhotoUrl() {
-        return photoUrl;
-    }
-
-    public void setPhotoUrl(String photoUrl) {
-        this.photoUrl = photoUrl;
     }
 
     public String getType() {
