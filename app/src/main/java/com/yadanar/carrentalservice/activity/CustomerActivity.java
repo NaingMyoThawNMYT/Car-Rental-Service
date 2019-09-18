@@ -1,5 +1,6 @@
 package com.yadanar.carrentalservice.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -7,24 +8,36 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarListRvAdapter;
 import com.yadanar.carrentalservice.listener.CarListItemOnClickListener;
 import com.yadanar.carrentalservice.model.Car;
+import com.yadanar.carrentalservice.storage.FirebaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CustomerActivity extends AppCompatActivity {
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference dbRefCar = database.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
+
     private boolean adminMode = false;
 
     private AppCompatEditText edtSearch;
     private RecyclerView rvCarList;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +47,11 @@ public class CustomerActivity extends AppCompatActivity {
         edtSearch = findViewById(R.id.edt_search);
         rvCarList = findViewById(R.id.rv_car_list);
 
+        dialog = new ProgressDialog(this);
+
         rvCarList.setHasFixedSize(true);
 
-        List<Car> carList = new ArrayList<>();
-        for (int i = 1; i <= 100; i++) {
-            Car car = new Car();
-            car.setType("Car " + i);
-            car.setPrice(1000 * i);
-            car.setYear(1000 * i);
-            car.setSeats(i);
-            car.setColor("Color " + i);
-            car.setAvailable(i % 2 == 0);
-            carList.add(car);
-        }
-        final CarListRvAdapter carListRvAdapter = new CarListRvAdapter(carList,
+        final CarListRvAdapter carListRvAdapter = new CarListRvAdapter(
                 new CarListItemOnClickListener() {
                     @Override
                     public void onClick(Car car, int position) {
@@ -85,6 +89,24 @@ public class CustomerActivity extends AppCompatActivity {
         });
 
         setLayoutManager(getResources().getConfiguration());
+
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        dbRefCar.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dialog.dismiss();
+                List<Car> carList = parseCarList((Map<String, Object>) dataSnapshot.getValue());
+                carListRvAdapter.setDataSet(carList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override
@@ -104,5 +126,28 @@ public class CustomerActivity extends AppCompatActivity {
 
     public void addNewCar(View v) {
         startActivity(new Intent(this, CarEditorActivity.class));
+    }
+
+    private List<Car> parseCarList(Map<String, Object> carMap) {
+        List<Car> carList = new ArrayList<>();
+
+        for (Map.Entry<String, Object> entry : carMap.entrySet()) {
+            //Get car map
+            Map singleCar = (Map) entry.getValue();
+            Car car = new Car();
+            car.setAvailable(Boolean.valueOf(String.valueOf(singleCar.get("available"))));
+            car.setColor(String.valueOf(singleCar.get("color")));
+            car.setDescription(singleCar.get("description") == null
+                    ? ""
+                    : String.valueOf(singleCar.get("description")));
+            car.setId(String.valueOf(singleCar.get("id")));
+            car.setPrice(Double.valueOf(String.valueOf(singleCar.get("price"))));
+            car.setSeats(Integer.valueOf(String.valueOf(singleCar.get("seats"))));
+            car.setType(String.valueOf(singleCar.get("type")));
+            car.setYear(Integer.valueOf(String.valueOf(singleCar.get("year"))));
+            carList.add(car);
+        }
+
+        return carList;
     }
 }

@@ -23,10 +23,14 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
     private List<Car> filteredDataSet;
     private CarListItemOnClickListener onClickListener;
 
-    public CarListRvAdapter(List<Car> dataSet, CarListItemOnClickListener onClickListener) {
+    public CarListRvAdapter(CarListItemOnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    public void setDataSet(List<Car> dataSet) {
         this.dataSet = dataSet;
         this.filteredDataSet = dataSet;
-        this.onClickListener = onClickListener;
+        notifyDataSetChanged();
     }
 
     @NonNull
