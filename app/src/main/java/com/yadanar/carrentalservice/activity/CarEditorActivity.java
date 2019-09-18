@@ -12,7 +12,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,15 +29,20 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.yadanar.carrentalservice.R;
+import com.yadanar.carrentalservice.adapter.CarTypeArrayAdapter;
 import com.yadanar.carrentalservice.model.Car;
+import com.yadanar.carrentalservice.model.CarType;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.yadanar.carrentalservice.util.UiUtil.getNumber;
 import static com.yadanar.carrentalservice.util.UiUtil.getText_;
@@ -48,6 +52,7 @@ public class CarEditorActivity extends AppCompatActivity {
     private StorageReference mStorageRef;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dbRef = database.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
+    private DatabaseReference dbRefCarType = database.getReference(FirebaseHelper.CAR_TYPE_LIST_TABLE_NAME);
     private ChildEventListener childEventListener = new ChildEventListener() {
         @Override
         public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -76,6 +81,7 @@ public class CarEditorActivity extends AppCompatActivity {
     private Car car = null;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int REQUEST_PICK_IMAGE = 2;
+    private List<CarType> carTypeList = new ArrayList<>();
 
     private AppCompatTextView tvTitle;
     private AppCompatImageView imgCar;
@@ -91,6 +97,10 @@ public class CarEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_editor);
+
+        dbRef.addChildEventListener(childEventListener);
+
+        dialog = new ProgressDialog(this);
 
         tvTitle = findViewById(R.id.tv_title);
         imgCar = findViewById(R.id.img_car);
@@ -126,17 +136,13 @@ public class CarEditorActivity extends AppCompatActivity {
 
         tvTitle.setText(title);
 
-        final String[] types = new String[]{"A", "B", "C", "D", "E"};
-        ArrayAdapter<String> spnAdapter = new ArrayAdapter<>(this,
-                R.layout.simple_list_item,
-                types);
-        spnAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        final CarTypeArrayAdapter spnAdapter = new CarTypeArrayAdapter(CarEditorActivity.this);
         spnCarType.setAdapter(spnAdapter);
 
         spnCarType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(CarEditorActivity.this, types[i], Toast.LENGTH_SHORT).show();
+                Toast.makeText(CarEditorActivity.this, carTypeList.get(i).getName(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -144,9 +150,25 @@ public class CarEditorActivity extends AppCompatActivity {
             }
         });
 
-        dbRef.addChildEventListener(childEventListener);
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.show();
 
-        dialog = new ProgressDialog(this);
+        dbRefCarType.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dialog.dismiss();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    carTypeList.add(CarType.parseCarType(snapshot));
+                }
+                spnAdapter.setDataSet(carTypeList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                dialog.dismiss();
+            }
+        });
     }
 
     public void cancel(View v) {
@@ -154,8 +176,7 @@ public class CarEditorActivity extends AppCompatActivity {
     }
 
     public void save(View v) {
-        final Car car = new Car();
-        car.setType((String) spnCarType.getSelectedItem());
+        car.setType(((CarType) spnCarType.getSelectedItem()).getId());
         car.setPrice(getNumber(edtPrice));
         car.setYear(getNumber(edtYear));
         car.setSeats(getNumber(edtSeat));
@@ -257,7 +278,7 @@ public class CarEditorActivity extends AppCompatActivity {
         imgCar.setDrawingCacheEnabled(true);
         imgCar.buildDrawingCache();
         Drawable drawable = imgCar.getDrawable();
-        if (drawable == null) {
+        if (drawable == null || TextUtils.isEmpty(car.getId())) {
             showSuccessToastAndFinishActivity();
             return;
         }
@@ -266,11 +287,6 @@ public class CarEditorActivity extends AppCompatActivity {
         try {
             bitmap = ((BitmapDrawable) drawable).getBitmap();
         } catch (ClassCastException e) {
-            showSuccessToastAndFinishActivity();
-            return;
-        }
-
-        if (TextUtils.isEmpty(car.getId())) {
             showSuccessToastAndFinishActivity();
             return;
         }
