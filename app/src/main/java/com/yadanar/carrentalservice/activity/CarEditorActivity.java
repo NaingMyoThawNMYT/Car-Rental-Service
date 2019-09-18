@@ -176,6 +176,10 @@ public class CarEditorActivity extends AppCompatActivity {
     }
 
     public void save(View v) {
+        if (car == null) {
+            car = new Car();
+        }
+
         car.setType(((CarType) spnCarType.getSelectedItem()).getId());
         car.setPrice(getNumber(edtPrice));
         car.setYear(getNumber(edtYear));
@@ -257,8 +261,11 @@ public class CarEditorActivity extends AppCompatActivity {
     }
 
     private void uploadCar(OnSuccessListener onSuccessListener) {
-        String key = dbRef.push().getKey();
-        car.setId(key);
+        if (TextUtils.isEmpty(car.getId())) {
+            String key = dbRef.push().getKey();
+            car.setId(key);
+        }
+
         dbRef.child(car.getId())
                 .setValue(car)
                 .addOnFailureListener(new OnFailureListener() {

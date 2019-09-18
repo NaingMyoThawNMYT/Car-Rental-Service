@@ -23,6 +23,7 @@ import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarListRvAdapter;
 import com.yadanar.carrentalservice.listener.CarListItemOnClickListener;
 import com.yadanar.carrentalservice.model.Car;
+import com.yadanar.carrentalservice.model.CarType;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import java.util.Map;
 public class CustomerActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dbRefCar = database.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
+    private DatabaseReference dbRefCarType = database.getReference(FirebaseHelper.CAR_TYPE_LIST_TABLE_NAME);
 
     private boolean adminMode = false;
 
@@ -94,12 +96,27 @@ public class CustomerActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
-        dbRefCar.addValueEventListener(new ValueEventListener() {
+        dbRefCarType.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                dialog.dismiss();
-                List<Car> carList = parseCarList((Map<String, Object>) dataSnapshot.getValue());
-                carListRvAdapter.setDataSet(carList);
+            public void onDataChange(@NonNull DataSnapshot carTypeDataSnapshot) {
+                final List<CarType> carTypeList = new ArrayList<>();
+                for (DataSnapshot snapshot : carTypeDataSnapshot.getChildren()) {
+                    carTypeList.add(CarType.parseCarType(snapshot));
+                }
+
+                dbRefCar.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        dialog.dismiss();
+                        List<Car> carList = parseCarList((Map<String, Object>) dataSnapshot.getValue(), carTypeList);
+                        carListRvAdapter.setDataSet(carList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        dialog.dismiss();
+                    }
+                });
             }
 
             @Override
@@ -128,8 +145,12 @@ public class CustomerActivity extends AppCompatActivity {
         startActivity(new Intent(this, CarEditorActivity.class));
     }
 
-    private List<Car> parseCarList(Map<String, Object> carMap) {
+    private List<Car> parseCarList(Map<String, Object> carMap, List<CarType> carTypeList) {
         List<Car> carList = new ArrayList<>();
+
+        if (carMap == null) {
+            return carList;
+        }
 
         for (Map.Entry<String, Object> entry : carMap.entrySet()) {
             //Get car map
@@ -143,7 +164,12 @@ public class CustomerActivity extends AppCompatActivity {
             car.setId(String.valueOf(singleCar.get("id")));
             car.setPrice(Double.valueOf(String.valueOf(singleCar.get("price"))));
             car.setSeats(Integer.valueOf(String.valueOf(singleCar.get("seats"))));
-            car.setType(String.valueOf(singleCar.get("type")));
+            for (CarType carType : carTypeList) {
+                if (String.valueOf(singleCar.get("type")).equals(carType.getId())) {
+                    car.setType(carType.getId());
+                    car.setTypeName(carType.getName());
+                }
+            }
             car.setYear(Integer.valueOf(String.valueOf(singleCar.get("year"))));
             carList.add(car);
         }

@@ -12,6 +12,7 @@ public class Car implements Serializable {
             year;
     private double price;
     private boolean available = true;
+    private transient String typeName;
 
     public String getId() {
         return id;
@@ -83,5 +84,13 @@ public class Car implements Serializable {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

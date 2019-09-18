@@ -46,7 +46,7 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
         final int position = holder.getAdapterPosition();
         final Car car = filteredDataSet.get(position);
 
-        holder.tvType.setText(car.getType());
+        holder.tvType.setText(car.getTypeName());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
