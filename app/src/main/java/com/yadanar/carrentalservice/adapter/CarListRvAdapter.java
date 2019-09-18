@@ -1,5 +1,7 @@
 package com.yadanar.carrentalservice.adapter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.listener.CarListItemOnClickListener;
 import com.yadanar.carrentalservice.model.Car;
@@ -19,12 +25,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyViewHolder> implements Filterable {
+    private StorageReference storageRef;
+
     private List<Car> dataSet;
     private List<Car> filteredDataSet;
     private CarListItemOnClickListener onClickListener;
 
     public CarListRvAdapter(CarListItemOnClickListener onClickListener) {
         this.onClickListener = onClickListener;
+
+        storageRef = FirebaseStorage.getInstance().getReference();
     }
 
     public void setDataSet(List<Car> dataSet) {
@@ -42,11 +52,23 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CarListRvAdapter.MyViewHolder holder, int p) {
+    public void onBindViewHolder(@NonNull final CarListRvAdapter.MyViewHolder holder, int p) {
         final int position = holder.getAdapterPosition();
         final Car car = filteredDataSet.get(position);
 
         holder.tvType.setText(car.getTypeName());
+
+        storageRef.child(car.getId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] bytes) {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                holder.imgCar.setImageBitmap(bitmap);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+            }
+        });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
