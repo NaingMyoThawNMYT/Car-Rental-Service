@@ -4,4 +4,6 @@ import com.yadanar.carrentalservice.model.Car;
 
 public interface CarListItemOnClickListener {
     void onClick(Car car, int position);
+
+    void onLongClick(Car car, int position);
 }

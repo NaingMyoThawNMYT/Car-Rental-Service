@@ -75,6 +75,14 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
                 onClickListener.onClick(car, position);
             }
         });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                onClickListener.onLongClick(car, position);
+                return true;
+            }
+        });
     }
 
     @Override

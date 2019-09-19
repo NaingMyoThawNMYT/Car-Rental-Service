@@ -1,6 +1,10 @@
 package com.yadanar.carrentalservice.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -67,6 +71,11 @@ public class CustomerActivity extends AppCompatActivity {
                             i.putExtra(CarDetailActivity.KEY_CAR_IMAGE_BYTE_ARRAY_PARAM, car.getImageByteArray());
                         }
                         startActivity(i);
+                    }
+
+                    @Override
+                    public void onLongClick(Car car, int position) {
+                        openCarTypeDeleteDialog(CustomerActivity.this, car);
                     }
                 });
         rvCarList.setAdapter(carListRvAdapter);
@@ -179,5 +188,22 @@ public class CustomerActivity extends AppCompatActivity {
         }
 
         return carList;
+    }
+
+    private void openCarTypeDeleteDialog(final Context context, final Car car) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Are you sure?");
+        builder.setMessage("Delete " + car.getTypeName() + "?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dbRefCar.child(car.getId()).removeValue();
+
+                // TODO: 9/19/19 delete photo too
+            }
+        });
+
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }
