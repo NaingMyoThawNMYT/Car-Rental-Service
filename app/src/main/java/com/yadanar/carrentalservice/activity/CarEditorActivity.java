@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yadanar.carrentalservice.util.UiUtil.getIntNumber;
 import static com.yadanar.carrentalservice.util.UiUtil.getNumber;
 import static com.yadanar.carrentalservice.util.UiUtil.getText_;
 import static com.yadanar.carrentalservice.util.UiUtil.setError;
@@ -166,8 +167,8 @@ public class CarEditorActivity extends AppCompatActivity {
 
         car.setType(((CarType) spnCarType.getSelectedItem()).getId());
         car.setPrice(getNumber(edtPrice));
-        car.setYear(getNumber(edtYear));
-        car.setSeats(getNumber(edtSeat));
+        car.setYear(getIntNumber(edtYear));
+        car.setSeats(getIntNumber(edtSeat));
         car.setColor(getText_(edtColor));
         car.setDescription(getText_(edtDescription));
 

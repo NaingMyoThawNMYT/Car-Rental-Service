@@ -13,11 +13,15 @@ public class UiUtil {
         return edt.getText().toString().trim();
     }
 
-    public static int getNumber(EditText edt) {
+    public static double getNumber(EditText edt) {
         String s = edt.getText().toString().trim();
         if (TextUtils.isEmpty(s)) {
             return 0;
         }
-        return Integer.valueOf(s);
+        return Double.valueOf(s);
+    }
+
+    public static int getIntNumber(EditText edt) {
+        return (int) getNumber(edt);
     }
 }
