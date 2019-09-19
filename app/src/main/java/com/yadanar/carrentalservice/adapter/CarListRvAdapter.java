@@ -102,7 +102,7 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
                     filteredList.addAll(new ArrayList<>(dataSet));
                 } else {
                     for (Car car : dataSet) {
-                        if (car.getType().toLowerCase().contains(searchTerm)) {
+                        if (car.getTypeName().toLowerCase().contains(searchTerm.toLowerCase())) {
                             filteredList.add(car);
                         }
                     }
