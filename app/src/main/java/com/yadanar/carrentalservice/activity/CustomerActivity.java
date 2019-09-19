@@ -23,6 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarListRvAdapter;
 import com.yadanar.carrentalservice.listener.CarListItemOnClickListener;
@@ -38,6 +40,7 @@ public class CustomerActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dbRefCar = database.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
     private DatabaseReference dbRefCarType = database.getReference(FirebaseHelper.CAR_TYPE_LIST_TABLE_NAME);
+    private StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
     private boolean adminMode = false;
 
@@ -199,7 +202,7 @@ public class CustomerActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 dbRefCar.child(car.getId()).removeValue();
 
-                // TODO: 9/19/19 delete photo too
+                storageRef.child(car.getId()).delete();
             }
         });
 
