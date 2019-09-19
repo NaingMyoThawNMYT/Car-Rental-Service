@@ -12,6 +12,7 @@ public class Car implements Serializable {
     private double price;
     private boolean available = true;
     private transient String typeName;
+    private transient byte[] imageByteArray;
 
     public String getId() {
         return id;
@@ -83,5 +84,13 @@ public class Car implements Serializable {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
+    }
+
+    public byte[] getImageByteArray() {
+        return imageByteArray;
+    }
+
+    public void setImageByteArray(byte[] imageByteArray) {
+        this.imageByteArray = imageByteArray;
     }
 }

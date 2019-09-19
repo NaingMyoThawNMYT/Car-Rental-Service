@@ -36,6 +36,7 @@ import com.yadanar.carrentalservice.adapter.CarTypeArrayAdapter;
 import com.yadanar.carrentalservice.model.Car;
 import com.yadanar.carrentalservice.model.CarType;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
+import com.yadanar.carrentalservice.util.BitmapUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -92,7 +93,13 @@ public class CarEditorActivity extends AppCompatActivity {
                 if (car != null) {
                     title = getString(R.string.edit);
 
-                    // TODO: 9/19/19 fetch and set car photo
+                    if (b.containsKey(CarDetailActivity.KEY_CAR_IMAGE_BYTE_ARRAY_PARAM)) {
+                        imgCar.setImageBitmap(BitmapUtil.byteArrayToBitmap(
+                                b.getByteArray(CarDetailActivity.KEY_CAR_IMAGE_BYTE_ARRAY_PARAM)));
+                    } else {
+                        // TODO: 9/19/19 fetch and set car photo
+                    }
+
                     edtPrice.setText(String.valueOf(car.getPrice()));
                     edtYear.setText(String.valueOf(car.getYear()));
                     edtSeat.setText(String.valueOf(car.getSeats()));

@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Car;
+import com.yadanar.carrentalservice.util.BitmapUtil;
 
 public class CarDetailActivity extends AppCompatActivity {
     public static final String KEY_CAR_PARAM = "key_car_param";
     public static final String KEY_CAR_TYPE_NAME_PARAM = "key_car_type_param";
+    public static final String KEY_CAR_IMAGE_BYTE_ARRAY_PARAM = "key_car_image_byte_array_param";
 
     private Car car = null;
 
@@ -43,10 +45,15 @@ public class CarDetailActivity extends AppCompatActivity {
             car = (Car) b.get(KEY_CAR_PARAM);
 
             if (car != null) {
-                // TODO: 9/19/19 fetch and set car photo
-
                 if (b.containsKey(KEY_CAR_TYPE_NAME_PARAM)) {
                     car.setTypeName(b.getString(KEY_CAR_TYPE_NAME_PARAM));
+                }
+
+                if (b.containsKey(KEY_CAR_IMAGE_BYTE_ARRAY_PARAM)) {
+                    imgCar.setImageBitmap(BitmapUtil.byteArrayToBitmap(
+                            b.getByteArray(KEY_CAR_IMAGE_BYTE_ARRAY_PARAM)));
+                } else {
+                    // TODO: 9/19/19 fetch and set car photo
                 }
 
                 tvType.setText(car.getTypeName());

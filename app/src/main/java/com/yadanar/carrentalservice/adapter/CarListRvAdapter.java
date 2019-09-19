@@ -1,7 +1,5 @@
 package com.yadanar.carrentalservice.adapter;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +18,7 @@ import com.google.firebase.storage.StorageReference;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.listener.CarListItemOnClickListener;
 import com.yadanar.carrentalservice.model.Car;
+import com.yadanar.carrentalservice.util.BitmapUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,8 +60,8 @@ public class CarListRvAdapter extends RecyclerView.Adapter<CarListRvAdapter.MyVi
         storageRef.child(car.getId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                holder.imgCar.setImageBitmap(bitmap);
+                car.setImageByteArray(bytes);
+                holder.imgCar.setImageBitmap(BitmapUtil.byteArrayToBitmap(bytes));
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
