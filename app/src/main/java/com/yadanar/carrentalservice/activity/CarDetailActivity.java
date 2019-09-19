@@ -6,8 +6,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Car;
 import com.yadanar.carrentalservice.util.BitmapUtil;
@@ -16,6 +21,8 @@ public class CarDetailActivity extends AppCompatActivity {
     public static final String KEY_CAR_PARAM = "key_car_param";
     public static final String KEY_CAR_TYPE_NAME_PARAM = "key_car_type_param";
     public static final String KEY_CAR_IMAGE_BYTE_ARRAY_PARAM = "key_car_image_byte_array_param";
+
+    private StorageReference storageRef;
 
     private Car car = null;
 
@@ -31,6 +38,8 @@ public class CarDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_detail);
+
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         imgCar = findViewById(R.id.img_car);
         tvType = findViewById(R.id.tv_car_type);
@@ -53,7 +62,16 @@ public class CarDetailActivity extends AppCompatActivity {
                     imgCar.setImageBitmap(BitmapUtil.byteArrayToBitmap(
                             b.getByteArray(KEY_CAR_IMAGE_BYTE_ARRAY_PARAM)));
                 } else {
-                    // TODO: 9/19/19 fetch and set car photo
+                    storageRef.child(car.getId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                        @Override
+                        public void onSuccess(byte[] bytes) {
+                            imgCar.setImageBitmap(BitmapUtil.byteArrayToBitmap(bytes));
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                        }
+                    });
                 }
 
                 tvType.setText(car.getTypeName());

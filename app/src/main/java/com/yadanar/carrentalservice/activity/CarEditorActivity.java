@@ -48,7 +48,7 @@ import static com.yadanar.carrentalservice.util.UiUtil.getText_;
 import static com.yadanar.carrentalservice.util.UiUtil.setError;
 
 public class CarEditorActivity extends AppCompatActivity {
-    private StorageReference mStorageRef;
+    private StorageReference storageRef;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference dbRef = database.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
     private DatabaseReference dbRefCarType = database.getReference(FirebaseHelper.CAR_TYPE_LIST_TABLE_NAME);
@@ -72,6 +72,8 @@ public class CarEditorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_editor);
+
+        storageRef = FirebaseStorage.getInstance().getReference();
 
         dialog = new ProgressDialog(this);
 
@@ -97,7 +99,16 @@ public class CarEditorActivity extends AppCompatActivity {
                         imgCar.setImageBitmap(BitmapUtil.byteArrayToBitmap(
                                 b.getByteArray(CarDetailActivity.KEY_CAR_IMAGE_BYTE_ARRAY_PARAM)));
                     } else {
-                        // TODO: 9/19/19 fetch and set car photo
+                        storageRef.child(car.getId()).getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                            @Override
+                            public void onSuccess(byte[] bytes) {
+                                imgCar.setImageBitmap(BitmapUtil.byteArrayToBitmap(bytes));
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                            }
+                        });
                     }
 
                     edtPrice.setText(String.valueOf(car.getPrice()));
@@ -269,8 +280,8 @@ public class CarEditorActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
 
-        mStorageRef = FirebaseStorage.getInstance().getReference().child(car.getId());
-        UploadTask uploadTask = mStorageRef.putBytes(data);
+        StorageReference storageReference = storageRef.child(car.getId());
+        UploadTask uploadTask = storageReference.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {

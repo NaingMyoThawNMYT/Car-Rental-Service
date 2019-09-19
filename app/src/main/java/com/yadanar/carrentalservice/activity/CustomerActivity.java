@@ -63,7 +63,9 @@ public class CustomerActivity extends AppCompatActivity {
                                         : CarDetailActivity.class);
                         i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
                         i.putExtra(CarDetailActivity.KEY_CAR_TYPE_NAME_PARAM, car.getTypeName());
-                        i.putExtra(CarDetailActivity.KEY_CAR_IMAGE_BYTE_ARRAY_PARAM, car.getImageByteArray());
+                        if (car.getImageByteArray() != null) {
+                            i.putExtra(CarDetailActivity.KEY_CAR_IMAGE_BYTE_ARRAY_PARAM, car.getImageByteArray());
+                        }
                         startActivity(i);
                     }
                 });
