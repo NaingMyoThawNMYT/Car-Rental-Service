@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,6 +23,7 @@ public class CarDetailActivity extends AppCompatActivity {
     public static final String KEY_CAR_PARAM = "key_car_param";
     public static final String KEY_CAR_TYPE_NAME_PARAM = "key_car_type_param";
     public static final String KEY_CAR_IMAGE_BYTE_ARRAY_PARAM = "key_car_image_byte_array_param";
+    private static final int REQUEST_CODE = 10101;
 
     private StorageReference storageRef;
 
@@ -88,9 +91,24 @@ public class CarDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            Toast.makeText(CarDetailActivity.this,
+                    "Car is booked successfully",
+                    Toast.LENGTH_SHORT).show();
+
+            // TODO: 9/20/19 show success dialog and go back to list when click on OK button
+
+            finish();
+        }
+    }
+
     public void bookNow(View v) {
         Intent i = new Intent(CarDetailActivity.this, BookingActivity.class);
-        i.putExtra(CarDetailActivity.KEY_CAR_PARAM, car);
-        startActivity(i);
+        i.putExtra(BookingActivity.KEY_CAR_ID_PARAM, car.getId());
+        startActivityForResult(i, REQUEST_CODE);
     }
 }

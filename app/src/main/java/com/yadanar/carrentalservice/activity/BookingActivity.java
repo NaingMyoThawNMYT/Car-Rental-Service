@@ -1,6 +1,7 @@
 package com.yadanar.carrentalservice.activity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,13 +9,20 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatRadioButton;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Customer;
+import com.yadanar.carrentalservice.storage.FirebaseHelper;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -25,12 +33,18 @@ import static com.yadanar.carrentalservice.util.UiUtil.getText_;
 import static com.yadanar.carrentalservice.util.UiUtil.setError;
 
 public class BookingActivity extends AppCompatActivity {
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference customerTable = db.getReference(FirebaseHelper.CUSTOMER_LIST_TABLE_NAME);
+    private DatabaseReference carTable = db.getReference(FirebaseHelper.CAR_LIST_TABLE_NAME);
+
+    public static final String KEY_CAR_ID_PARAM = "key_car_id_param";
 
     private int mYear,
             mMonth,
             mDay,
             mHour,
             mMinute;
+    private String carId;
 
     private EditText edtName,
             edtId,
@@ -41,6 +55,7 @@ public class BookingActivity extends AppCompatActivity {
             btnStartTime;
     private AppCompatRadioButton rdMale,
             rdFemale;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +81,13 @@ public class BookingActivity extends AppCompatActivity {
 
         btnStartDate.setText(displayDateOnlyFormat(getDate()));
         btnStartTime.setText(displayTimeOnlyFormat(getDate()));
+
+        dialog = new ProgressDialog(this);
+
+        Bundle b = getIntent().getExtras();
+        if (b != null && b.containsKey(KEY_CAR_ID_PARAM)) {
+            carId = b.getString(KEY_CAR_ID_PARAM);
+        }
     }
 
     public void openDatePickerDialog(View v) {
@@ -102,11 +124,12 @@ public class BookingActivity extends AppCompatActivity {
     public void submitForm(View v) {
         Customer customer = new Customer();
         customer.setName(getText_(edtName));
-        customer.setId(getText_(edtId));
+        customer.setNrc(getText_(edtId));
         customer.setEmail(getText_(edtEmail));
         customer.setPhone(getText_(edtPhone));
         customer.setAddress(getText_(edtAddress));
         customer.setGender(rdMale.isChecked() ? "Male" : "Female");
+        customer.setCarId(carId);
         customer.setDate(getDate().getTime());
 
         if (TextUtils.isEmpty(customer.getName())) {
@@ -114,7 +137,7 @@ public class BookingActivity extends AppCompatActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(customer.getId())) {
+        if (TextUtils.isEmpty(customer.getNrc())) {
             setError(edtId);
             return;
         }
@@ -134,9 +157,59 @@ public class BookingActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO: 9/8/19 save customer data to database
+        if (TextUtils.isEmpty(customer.getCarId())) {
+            Toast.makeText(BookingActivity.this,
+                    "No car is selected!",
+                    Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-        finish();
+        dialog.setMessage("Loading...");
+        dialog.setCancelable(false);
+        dialog.show();
+
+        String key = customerTable.push().getKey();
+        customer.setId(key);
+
+        customerTable.child(customer.getId())
+                .setValue(customer)
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        dialog.dismiss();
+                        Toast.makeText(BookingActivity.this,
+                                e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        carTable.child(carId)
+                                .child("available")
+                                .setValue(false)
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        dialog.dismiss();
+                                        Toast.makeText(BookingActivity.this,
+                                                e.getMessage(),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                })
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        dialog.dismiss();
+
+                                        setResult(RESULT_OK, null);
+
+                                        finish();
+                                    }
+                                });
+                    }
+                });
     }
 
     public void cancelBooking(View v) {

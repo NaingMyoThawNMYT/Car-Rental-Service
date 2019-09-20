@@ -5,10 +5,12 @@ import java.io.Serializable;
 public class Customer implements Serializable {
     private String id,
             name,
+            nrc,
             email,
             phone,
             address,
-            gender;
+            gender,
+            carId;
     private long date;
 
     public String getId() {
@@ -25,6 +27,14 @@ public class Customer implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNrc() {
+        return nrc;
+    }
+
+    public void setNrc(String nrc) {
+        this.nrc = nrc;
     }
 
     public String getEmail() {
@@ -57,6 +67,14 @@ public class Customer implements Serializable {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getCarId() {
+        return carId;
+    }
+
+    public void setCarId(String carId) {
+        this.carId = carId;
     }
 
     public long getDate() {
