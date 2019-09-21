@@ -54,8 +54,10 @@ public class CheckOutActivity extends AppCompatActivity {
         tvColor = findViewById(R.id.tv_color);
 
         Bundle b = getIntent().getExtras();
-        if (b != null && b.containsKey(DashboardActivity.KEY_RENTED_CAR_PARAM)) {
+        if (b != null && b.containsKey(DashboardActivity.KEY_RENTED_CAR_PARAM)
+                && b.containsKey(CarDetailActivity.KEY_CAR_TYPE_NAME_PARAM)) {
             rentedCar = (RentedCar) b.get(DashboardActivity.KEY_RENTED_CAR_PARAM);
+            rentedCar.getCar().setTypeName(b.getString(CarDetailActivity.KEY_CAR_TYPE_NAME_PARAM));
 
             if (rentedCar != null) {
                 final Calendar c = Calendar.getInstance();
@@ -65,7 +67,8 @@ public class CheckOutActivity extends AppCompatActivity {
                 mHour = c.get(Calendar.HOUR_OF_DAY);
                 mMinute = c.get(Calendar.MINUTE);
 
-                btnStartTime.setText(DateUtil.displayDateAndTimeFormat(getDate()));
+                btnStartTime.setText(DateUtil.displayDateAndTimeFormat(new Date(rentedCar.getCustomer().getDate())));
+                btnEndTime.setText(DateUtil.displayDateAndTimeFormat(getEndDate()));
                 tvCustomer.setText(rentedCar.getCustomer().getName());
                 tvCarType.setText(rentedCar.getCar().getTypeName());
                 tvPrice.setText(String.valueOf(rentedCar.getCar().getPrice()));
@@ -85,9 +88,9 @@ public class CheckOutActivity extends AppCompatActivity {
         AppCompatTextView tvTotalAmount = dialog.findViewById(R.id.tv_total_amount);
         AppCompatButton btnReturn = dialog.findViewById(R.id.btn_return);
 
-        tvTitle.setText(rentedCar.getCar().getType());
+        tvTitle.setText(rentedCar.getCar().getTypeName());
 
-        double diffHours = NumberUtil.getOneDigit(DateUtil.hoursDifference(getDate(), new Date(rentedCar.getCustomer().getDate())));
+        double diffHours = NumberUtil.getOneDigit(DateUtil.hoursDifference(getEndDate(), new Date(rentedCar.getCustomer().getDate())));
 
         tvTotalDuration.setText(diffHours + " hr");
         tvTotalAmount.setText(rentedCar.getCar().getPrice() * diffHours + " ks");
@@ -135,7 +138,7 @@ public class CheckOutActivity extends AppCompatActivity {
                         mHour = hourOfDay;
                         mMinute = minute;
 
-                        if (getDate().getTime() < rentedCar.getCustomer().getDate()) {
+                        if (getEndDate().getTime() < rentedCar.getCustomer().getDate()) {
                             Toast.makeText(CheckOutActivity.this,
                                     "Reverse date cannot be apply",
                                     Toast.LENGTH_SHORT).show();
@@ -146,13 +149,13 @@ public class CheckOutActivity extends AppCompatActivity {
                             return;
                         }
 
-                        btnEndTime.setText(DateUtil.displayDateAndTimeFormat(getDate()));
+                        btnEndTime.setText(DateUtil.displayDateAndTimeFormat(getEndDate()));
                     }
                 }, mHour, mMinute, false);
         timePickerDialog.show();
     }
 
-    private Date getDate() {
+    private Date getEndDate() {
         final Calendar c = Calendar.getInstance();
         c.set(mYear, mMonth, mDay, mHour, mMinute);
         return c.getTime();

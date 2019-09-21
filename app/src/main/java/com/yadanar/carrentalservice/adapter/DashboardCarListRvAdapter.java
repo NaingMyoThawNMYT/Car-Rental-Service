@@ -75,8 +75,10 @@ public class DashboardCarListRvAdapter extends RecyclerView.Adapter<DashboardCar
                     filteredList.addAll(new ArrayList<>(dataSet));
                 } else {
                     for (RentedCar rentedCar : dataSet) {
-                        if (rentedCar.getCar().getType().toLowerCase().contains(searchTerm)
-                                || rentedCar.getCustomer().getName().contains(searchTerm)) {
+                        if (rentedCar.getCar().getTypeName().toLowerCase()
+                                .contains(searchTerm.toLowerCase())
+                                || rentedCar.getCustomer().getName().toLowerCase()
+                                .contains(searchTerm.toLowerCase())) {
                             filteredList.add(rentedCar);
                         }
                     }

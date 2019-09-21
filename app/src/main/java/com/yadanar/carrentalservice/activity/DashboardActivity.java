@@ -59,6 +59,7 @@ public class DashboardActivity extends AppCompatActivity {
                         Intent i = new Intent(DashboardActivity.this,
                                 CheckOutActivity.class);
                         i.putExtra(KEY_RENTED_CAR_PARAM, rentedCar);
+                        i.putExtra(CarDetailActivity.KEY_CAR_TYPE_NAME_PARAM, rentedCar.getCar().getTypeName());
                         startActivity(i);
                     }
                 });
