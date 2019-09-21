@@ -18,14 +18,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DashboardCarListRvAdapter extends RecyclerView.Adapter<DashboardCarListRvAdapter.MyViewHolder> implements Filterable {
-    private List<RentedCar> dataSet;
-    private List<RentedCar> filteredDataSet;
+    private List<RentedCar> dataSet = new ArrayList<>();
+    private List<RentedCar> filteredDataSet = new ArrayList<>();
     private OnItemClickListener onItemClickListener;
 
-    public DashboardCarListRvAdapter(List<RentedCar> dataSet, OnItemClickListener onItemClickListener) {
+    public DashboardCarListRvAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setDataSet(List<RentedCar> dataSet) {
         this.dataSet = dataSet;
         this.filteredDataSet = dataSet;
-        this.onItemClickListener = onItemClickListener;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -42,7 +46,7 @@ public class DashboardCarListRvAdapter extends RecyclerView.Adapter<DashboardCar
         final RentedCar rentedCar = filteredDataSet.get(position);
 
         holder.tvCustomer.setText(rentedCar.getCustomer().getName());
-        holder.tvCarType.setText(rentedCar.getCar().getType());
+        holder.tvCarType.setText(rentedCar.getCar().getTypeName());
         holder.tvStartTime.setText(new SimpleDateFormat("dd/MM/yyyy hh:mm")
                 .format(rentedCar.getCustomer().getDate()));
 

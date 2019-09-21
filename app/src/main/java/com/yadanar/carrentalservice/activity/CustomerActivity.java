@@ -161,7 +161,7 @@ public class CustomerActivity extends AppCompatActivity {
         startActivity(new Intent(this, CarEditorActivity.class));
     }
 
-    private List<Car> parseCarList(Map<String, Object> carMap, List<CarType> carTypeList) {
+    public static List<Car> parseCarList(Map<String, Object> carMap, List<CarType> carTypeList) {
         List<Car> carList = new ArrayList<>();
 
         if (carMap == null) {

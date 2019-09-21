@@ -58,8 +58,6 @@ public class CheckOutActivity extends AppCompatActivity {
             rentedCar = (RentedCar) b.get(DashboardActivity.KEY_RENTED_CAR_PARAM);
 
             if (rentedCar != null) {
-                Toast.makeText(this, rentedCar.getCar().getType(), Toast.LENGTH_SHORT).show();
-
                 final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
@@ -69,7 +67,7 @@ public class CheckOutActivity extends AppCompatActivity {
 
                 btnStartTime.setText(DateUtil.displayDateAndTimeFormat(getDate()));
                 tvCustomer.setText(rentedCar.getCustomer().getName());
-                tvCarType.setText(rentedCar.getCar().getType());
+                tvCarType.setText(rentedCar.getCar().getTypeName());
                 tvPrice.setText(String.valueOf(rentedCar.getCar().getPrice()));
                 tvYear.setText(String.valueOf(rentedCar.getCar().getYear()));
                 tvSeat.setText(String.valueOf(rentedCar.getCar().getSeats()));
