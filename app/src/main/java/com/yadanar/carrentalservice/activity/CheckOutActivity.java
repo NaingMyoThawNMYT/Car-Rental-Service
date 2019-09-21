@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.RentedCar;
+import com.yadanar.carrentalservice.storage.FirebaseHelper;
 import com.yadanar.carrentalservice.util.DateUtil;
 import com.yadanar.carrentalservice.util.NumberUtil;
 
@@ -23,6 +26,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class CheckOutActivity extends AppCompatActivity {
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference customerTable = db.getReference().child(FirebaseHelper.CUSTOMER_LIST_TABLE_NAME);
+    private DatabaseReference carTable = db.getReference().child(FirebaseHelper.CAR_LIST_TABLE_NAME);
+
     private RentedCar rentedCar = null;
     private int mYear,
             mMonth,
@@ -98,7 +105,9 @@ public class CheckOutActivity extends AppCompatActivity {
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 9/15/19 delete from dashboard list
+                customerTable.child(rentedCar.getCustomer().getId()).removeValue();
+
+                carTable.child(rentedCar.getCar().getId()).child("available").setValue(true);
 
                 dialog.dismiss();
 

@@ -89,6 +89,7 @@ public class DashboardActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()) {
+                    dialog.dismiss();
                     return;
                 }
 
@@ -98,6 +99,7 @@ public class DashboardActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot carTypeDataSnapshot) {
                         if (!carTypeDataSnapshot.exists()) {
+                            dialog.dismiss();
                             return;
                         }
 
