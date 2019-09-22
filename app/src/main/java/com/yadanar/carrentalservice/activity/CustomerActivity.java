@@ -31,6 +31,7 @@ import com.yadanar.carrentalservice.listener.CarListItemOnClickListener;
 import com.yadanar.carrentalservice.model.Car;
 import com.yadanar.carrentalservice.model.CarType;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
+import com.yadanar.carrentalservice.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,8 @@ public class CustomerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
+
+        UiUtil.checkConnectionAndFinishActivity(this);
 
         edtSearch = findViewById(R.id.edt_search);
         rvCarList = findViewById(R.id.rv_car_list);
@@ -200,6 +203,8 @@ public class CustomerActivity extends AppCompatActivity {
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                UiUtil.checkConnectionAndFinishActivity(CustomerActivity.this);
+
                 dbRefCar.child(car.getId()).removeValue();
 
                 storageRef.child(car.getId()).delete();

@@ -29,6 +29,7 @@ import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.adapter.CarTypeListRvAdapter;
 import com.yadanar.carrentalservice.model.CarType;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
+import com.yadanar.carrentalservice.util.UiUtil;
 
 public class CarTypeListActivity extends AppCompatActivity {
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -69,6 +70,8 @@ public class CarTypeListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_list_manage);
+
+        UiUtil.checkConnectionAndFinishActivity(this);
 
         rvCarTypeList = findViewById(R.id.rv_car_list);
         fabAddNew = findViewById(R.id.fab_add_new);
@@ -146,6 +149,8 @@ public class CarTypeListActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                UiUtil.checkConnectionAndFinishActivity(CarTypeListActivity.this);
+
                 String s = edtCarType.getText().toString().trim();
                 if (TextUtils.isEmpty(s)) {
                     edtCarType.setError("*require");
@@ -173,6 +178,8 @@ public class CarTypeListActivity extends AppCompatActivity {
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                UiUtil.checkConnectionAndFinishActivity(CarTypeListActivity.this);
+
                 dbRef.child(type.getId()).removeValue();
             }
         });

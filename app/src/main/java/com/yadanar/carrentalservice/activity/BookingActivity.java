@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.yadanar.carrentalservice.R;
 import com.yadanar.carrentalservice.model.Customer;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
+import com.yadanar.carrentalservice.util.UiUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -122,6 +123,8 @@ public class BookingActivity extends AppCompatActivity {
     }
 
     public void submitForm(View v) {
+        UiUtil.checkConnectionAndFinishActivity(this);
+
         Customer customer = new Customer();
         customer.setName(getText_(edtName));
         customer.setNrc(getText_(edtId));

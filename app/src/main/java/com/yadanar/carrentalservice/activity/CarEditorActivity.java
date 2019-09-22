@@ -37,6 +37,7 @@ import com.yadanar.carrentalservice.model.Car;
 import com.yadanar.carrentalservice.model.CarType;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
 import com.yadanar.carrentalservice.util.BitmapUtil;
+import com.yadanar.carrentalservice.util.UiUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -161,6 +162,8 @@ public class CarEditorActivity extends AppCompatActivity {
     }
 
     public void save(View v) {
+        UiUtil.checkConnectionAndFinishActivity(this);
+
         if (car == null) {
             car = new Car();
         }

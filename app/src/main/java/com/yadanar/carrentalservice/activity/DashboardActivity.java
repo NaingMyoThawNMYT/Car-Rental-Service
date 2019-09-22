@@ -25,6 +25,7 @@ import com.yadanar.carrentalservice.model.CarType;
 import com.yadanar.carrentalservice.model.Customer;
 import com.yadanar.carrentalservice.model.RentedCar;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
+import com.yadanar.carrentalservice.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +49,8 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+        UiUtil.checkConnectionAndFinishActivity(this);
 
         edtSearch = findViewById(R.id.edt_search);
         rvRentedCarList = findViewById(R.id.rv_rented_car_list);

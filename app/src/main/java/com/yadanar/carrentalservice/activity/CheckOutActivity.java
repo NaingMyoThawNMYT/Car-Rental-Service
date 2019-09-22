@@ -21,6 +21,7 @@ import com.yadanar.carrentalservice.model.RentedCar;
 import com.yadanar.carrentalservice.storage.FirebaseHelper;
 import com.yadanar.carrentalservice.util.DateUtil;
 import com.yadanar.carrentalservice.util.NumberUtil;
+import com.yadanar.carrentalservice.util.UiUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -105,6 +106,8 @@ public class CheckOutActivity extends AppCompatActivity {
         btnReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                UiUtil.checkConnectionAndFinishActivity(CheckOutActivity.this);
+
                 customerTable.child(rentedCar.getCustomer().getId()).removeValue();
 
                 carTable.child(rentedCar.getCar().getId()).child("available").setValue(true);
