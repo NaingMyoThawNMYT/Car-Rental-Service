@@ -30,6 +30,8 @@ public class AdminLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_login);
 
+        UiUtil.checkConnectionAndFinishActivity(this);
+
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
 
@@ -50,6 +52,8 @@ public class AdminLoginActivity extends AppCompatActivity {
             UiUtil.setError(edtPassword);
             return;
         }
+
+        UiUtil.checkConnectionAndFinishActivity(this);
 
         dialog.show();
         mAuth.signInWithEmailAndPassword(email, password)
