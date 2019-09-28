@@ -33,6 +33,7 @@ import java.util.Map;
 
 public class DashboardActivity extends AppCompatActivity {
     public static final String KEY_RENTED_CAR_PARAM = "key_rented_car_param";
+    public static boolean recreateActivity = false;
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference customerTable = db.getReference(FirebaseHelper.CUSTOMER_LIST_TABLE_NAME);
@@ -156,6 +157,16 @@ public class DashboardActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (recreateActivity) {
+            recreateActivity = false;
+            recreate();
+        }
     }
 
     private List<Customer> parseCustomerList(Map<String, Object> customerMap) {

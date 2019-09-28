@@ -40,4 +40,11 @@
     <string name="label_total_duration">Total Duration :</string>
     <string name="label_total_amount">Total Amount :</string>
     <string name="login">Login</string>
+    <string name="generate_invoice">Generate Invoice</string>
+    <string name="car_rental_invoice">Car Rental Invoice</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="return_date">Return Date :</string>
+    <string name="send_invoice_to_customer">Send invoice to Customer</string>
+    <string name="rental_information">Rental Information</string>
+    <string name="invoice_no">Invoice No :</string>
 </resources>

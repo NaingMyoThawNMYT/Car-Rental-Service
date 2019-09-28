@@ -11,7 +11,7 @@
     <style name="FormFieldLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
     </style>
 
     <style name="FormLeftLabel">
@@ -20,17 +20,20 @@
         <item name="android:layout_weight">2</item>
     </style>
 
-    <style name="FormRightField">
+    <style name="FormRightFieldWithoutBackground">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">3</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:background">@drawable/bg_rounded</item>
         <item name="android:padding">8dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="FormRightField" parent="FormRightFieldWithoutBackground">
+        <item name="android:background">@drawable/bg_rounded</item>
     </style>
 
 </resources>

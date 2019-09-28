@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".activity.GenerateInvoiceActivity">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/car_rental_invoice"
+        android:paddingTop="0dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <ScrollView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintBottom_toTopOf="@+id/btn_send_invoice"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/invoice_no" />
+
+                <TextView
+                    android:id="@+id/tv_invoice_no"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Invoice No" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/date" />
+
+                <TextView
+                    android:id="@+id/tv_date"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Date" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/customer_details"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/label_customer" />
+
+                <TextView
+                    android:id="@+id/tv_customer"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Customer" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/email" />
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Email" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/nrc_id" />
+
+                <TextView
+                    android:id="@+id/tv_nrc"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="NRC" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/address" />
+
+                <TextView
+                    android:id="@+id/tv_address"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Address" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/phone" />
+
+                <TextView
+                    android:id="@+id/tv_phone"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Phone" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rental_information"
+                android:paddingTop="16dp"
+                android:paddingBottom="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/label_car_type" />
+
+                <TextView
+                    android:id="@+id/tv_car_type"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Car Type" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/price_per_hour" />
+
+                <TextView
+                    android:id="@+id/tv_price"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Price/hr" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/start_date" />
+
+                <TextView
+                    android:id="@+id/tv_start_date"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Start Date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/return_date" />
+
+                <TextView
+                    android:id="@+id/tv_return_date"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Return Date" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/label_total_duration" />
+
+                <TextView
+                    android:id="@+id/tv_total_duration"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Total Duration" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginBottom="16dp"
+                style="@style/FormFieldLayout">
+
+                <TextView
+                    style="@style/FormLeftLabel"
+                    android:text="@string/label_total_amount" />
+
+                <TextView
+                    android:id="@+id/tv_total_amount"
+                    style="@style/FormRightFieldWithoutBackground"
+                    android:text="Total Amount" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_send_invoice"
+        android:layout_width="0dp"
+        android:text="@string/send_invoice_to_customer"
+        android:textAllCaps="false"
+        android:onClick="showCompleteDialog"
+        android:background="@drawable/bg_rounded"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
